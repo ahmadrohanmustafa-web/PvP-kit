@@ -9,7 +9,7 @@ final class FeatureModules { private FeatureModules() {} }
 final class CrosshairSystem extends FeatureModule {
     private static final String[] DEFAULTS={"center_dot","hit_marker","outline","custom_color","opacity","scale","spread","fade_on_damage","critical_indicator","projectile_hint","block_hint","ally_color","enemy_color","dynamic_gap","hit_feedback"};
     CrosshairSystem(){super("crosshair",DEFAULTS);}
-    @Override synchronized String summary(){return "crosshair: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
+    @Override public synchronized String summary(){return "crosshair: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
     /** Read center dot preference. */
     synchronized boolean centerDotEnabled(){return option("center_dot");}
     /** Update center dot preference. */
@@ -105,7 +105,7 @@ final class CrosshairSystem extends FeatureModule {
 final class CombatHudSystem extends FeatureModule {
     private static final String[] DEFAULTS={"health","absorption","armor","hunger","totem_count","shield_state","weapon_durability","attack_cooldown","target_health","target_armor","combo_counter","damage_numbers","latency","coordinates","combat_timer","low_health_warning"};
     CombatHudSystem(){super("combat_hud",DEFAULTS);}
-    @Override synchronized String summary(){return "combat hud: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
+    @Override public synchronized String summary(){return "combat hud: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
     /** Read health preference. */
     synchronized boolean healthEnabled(){return option("health");}
     /** Update health preference. */
@@ -206,7 +206,7 @@ final class CombatHudSystem extends FeatureModule {
 final class LoadoutSystem extends FeatureModule {
     private static final String[] DEFAULTS={"classic","crystal","potion","axe_sword","shield_tank","archer","uhc","netherite","diamond","iron","custom_a","custom_b","custom_c","save_slots","restore_last","server_safe"};
     LoadoutSystem(){super("loadouts",DEFAULTS);}
-    @Override synchronized String summary(){return "loadouts: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
+    @Override public synchronized String summary(){return "loadouts: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
     /** Read classic preference. */
     synchronized boolean classicEnabled(){return option("classic");}
     /** Update classic preference. */
@@ -307,7 +307,7 @@ final class LoadoutSystem extends FeatureModule {
 final class KeybindSystem extends FeatureModule {
     private static final String[] DEFAULTS={"open_menu","cycle_loadout","toggle_hud","toggle_crosshair","quick_totem","quick_shield","quick_weapon","animation_toggle","settings","reset_layout","mark_target","combat_log","show_coordinates","focus_hud","panic_hide","profile_next"};
     KeybindSystem(){super("keybinds",DEFAULTS);}
-    @Override synchronized String summary(){return "keybinds: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
+    @Override public synchronized String summary(){return "keybinds: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
     /** Read open menu preference. */
     synchronized boolean openMenuEnabled(){return option("open_menu");}
     /** Update open menu preference. */
@@ -408,7 +408,7 @@ final class KeybindSystem extends FeatureModule {
 final class AnimationSystem extends FeatureModule {
     private static final String[] DEFAULTS={"sword_swing","shield_raise","totem_pop","hit_flash","combo_pulse","hud_slide","fade_in","fade_out","button_press","loadout_swap","crosshair_expand","damage_float","low_health_pulse","critical_spark","particle_burst","screen_shake"};
     AnimationSystem(){super("animations",DEFAULTS);}
-    @Override synchronized String summary(){return "animations: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
+    @Override public synchronized String summary(){return "animations: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
     /** Read sword swing preference. */
     synchronized boolean swordSwingEnabled(){return option("sword_swing");}
     /** Update sword swing preference. */
@@ -509,7 +509,7 @@ final class AnimationSystem extends FeatureModule {
 final class SwordAssistantSystem extends FeatureModule {
     private static final String[] DEFAULTS={"attack_cooldown","weapon_durability","sharpness_hint","crit_timing","sprint_reset_hint","reach_display","combo_timing","axe_swap_hint","attack_indicator","shield_break_hint","hotbar_sword","damage_estimate","falling_crit","water_penalty","attack_ready"};
     SwordAssistantSystem(){super("sword_assist",DEFAULTS);}
-    @Override synchronized String summary(){return "sword assist: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
+    @Override public synchronized String summary(){return "sword assist: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
     /** Read attack cooldown preference. */
     synchronized boolean attackCooldownEnabled(){return option("attack_cooldown");}
     /** Update attack cooldown preference. */
@@ -605,7 +605,7 @@ final class SwordAssistantSystem extends FeatureModule {
 final class ShieldAssistantSystem extends FeatureModule {
     private static final String[] DEFAULTS={"shield_durability","raise_hint","axe_threat","block_state","offhand_check","shield_cooldown","projectile_warning","shield_bash_hint","hotbar_shield","low_durability","block_animation","hand_swap_hint","shield_break_alert","fire_resistance_hint","guard_timer"};
     ShieldAssistantSystem(){super("shield_assist",DEFAULTS);}
-    @Override synchronized String summary(){return "shield assist: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
+    @Override public synchronized String summary(){return "shield assist: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
     /** Read shield durability preference. */
     synchronized boolean shieldDurabilityEnabled(){return option("shield_durability");}
     /** Update shield durability preference. */
@@ -701,7 +701,7 @@ final class ShieldAssistantSystem extends FeatureModule {
 final class TotemAssistantSystem extends FeatureModule {
     private static final String[] DEFAULTS={"totem_count","offhand_totem","hotbar_totem","low_count_warning","totem_pop_flash","totem_restock_hint","inventory_scan","totem_sound","totem_cooldown","totem_slot_marker","panic_key","offhand_priority","hotbar_priority","death_prevention_status","totem_animation"};
     TotemAssistantSystem(){super("totem_assist",DEFAULTS);}
-    @Override synchronized String summary(){return "totem assist: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
+    @Override public synchronized String summary(){return "totem assist: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
     /** Read totem count preference. */
     synchronized boolean totemCountEnabled(){return option("totem_count");}
     /** Update totem count preference. */
@@ -797,7 +797,7 @@ final class TotemAssistantSystem extends FeatureModule {
 final class PotionAssistantSystem extends FeatureModule {
     private static final String[] DEFAULTS={"strength","swiftness","fire_resistance","regeneration","instant_health","slow_falling","night_vision","poison_warning","weakness_warning","active_effect_timer","splash_potion_count","drink_progress","potion_hotbar","throw_hint","effect_priority"};
     PotionAssistantSystem(){super("potion_assist",DEFAULTS);}
-    @Override synchronized String summary(){return "potion assist: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
+    @Override public synchronized String summary(){return "potion assist: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
     /** Read strength preference. */
     synchronized boolean strengthEnabled(){return option("strength");}
     /** Update strength preference. */
@@ -893,7 +893,7 @@ final class PotionAssistantSystem extends FeatureModule {
 final class InventoryAssistantSystem extends FeatureModule {
     private static final String[] DEFAULTS={"hotbar_layout","food_slot","pearls_slot","blocks_slot","water_bucket_slot","crystal_slot","obsidian_slot","arrow_slot","throwables_slot","sort_profile","low_food_warning","low_block_warning","empty_slot_warning","quick_move_hint","inventory_snapshot"};
     InventoryAssistantSystem(){super("inventory_assist",DEFAULTS);}
-    @Override synchronized String summary(){return "inventory assist: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
+    @Override public synchronized String summary(){return "inventory assist: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
     /** Read hotbar layout preference. */
     synchronized boolean hotbarLayoutEnabled(){return option("hotbar_layout");}
     /** Update hotbar layout preference. */
@@ -989,7 +989,7 @@ final class InventoryAssistantSystem extends FeatureModule {
 final class TargetInfoSystem extends FeatureModule {
     private static final String[] DEFAULTS={"name","health","armor","held_item","distance","angle","line_of_sight","friend_marker","enemy_marker","team_color","entity_type","weapon_enchantments","absorption","totem_pop_count","combat_history"};
     TargetInfoSystem(){super("target_info",DEFAULTS);}
-    @Override synchronized String summary(){return "target info: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
+    @Override public synchronized String summary(){return "target info: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
     /** Read name preference. */
     synchronized boolean nameEnabled(){return option("name");}
     /** Update name preference. */
@@ -1085,7 +1085,7 @@ final class TargetInfoSystem extends FeatureModule {
 final class ComboTrackerSystem extends FeatureModule {
     private static final String[] DEFAULTS={"hit_count","miss_count","streak","hit_rate","damage_total","damage_average","critical_hits","shield_breaks","totem_pops","combo_timer","reset_on_world_change","session_summary","personal_best","streak_animation","combat_start"};
     ComboTrackerSystem(){super("combo_tracker",DEFAULTS);}
-    @Override synchronized String summary(){return "combo tracker: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
+    @Override public synchronized String summary(){return "combo tracker: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
     /** Read hit count preference. */
     synchronized boolean hitCountEnabled(){return option("hit_count");}
     /** Update hit count preference. */
@@ -1181,7 +1181,7 @@ final class ComboTrackerSystem extends FeatureModule {
 final class CooldownSystem extends FeatureModule {
     private static final String[] DEFAULTS={"attack","shield","ender_pearl","chorus","food","totem","crystal","anchor","potion","bow","crossbow","wind_charge","water_bucket","firework","custom_a","custom_b"};
     CooldownSystem(){super("cooldowns",DEFAULTS);}
-    @Override synchronized String summary(){return "cooldowns: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
+    @Override public synchronized String summary(){return "cooldowns: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
     /** Read attack preference. */
     synchronized boolean attackEnabled(){return option("attack");}
     /** Update attack preference. */
@@ -1282,7 +1282,7 @@ final class CooldownSystem extends FeatureModule {
 final class EffectsSystem extends FeatureModule {
     private static final String[] DEFAULTS={"hit_spark","crit_spark","shield_flash","totem_burst","low_health_pulse","combo_glow","loadout_swoosh","button_click","warning_flash","heal_pulse","block_break","damage_fade","kill_confirm","pearl_trail","subtle_particles"};
     EffectsSystem(){super("effects",DEFAULTS);}
-    @Override synchronized String summary(){return "effects: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
+    @Override public synchronized String summary(){return "effects: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
     /** Read hit spark preference. */
     synchronized boolean hitSparkEnabled(){return option("hit_spark");}
     /** Update hit spark preference. */
@@ -1378,7 +1378,7 @@ final class EffectsSystem extends FeatureModule {
 final class SettingsSystem extends FeatureModule {
     private static final String[] DEFAULTS={"hud_enabled","crosshair_enabled","animations_enabled","particles_enabled","sounds_enabled","compact_mode","left_handed","high_contrast","reduce_motion","show_target","show_cooldowns","show_coordinates","show_durability","show_combat_stats","auto_save","server_safe"};
     SettingsSystem(){super("settings",DEFAULTS);}
-    @Override synchronized String summary(){return "settings: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
+    @Override public synchronized String summary(){return "settings: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
     /** Read hud enabled preference. */
     synchronized boolean hudEnabledEnabled(){return option("hud_enabled");}
     /** Update hud enabled preference. */
@@ -1479,7 +1479,7 @@ final class SettingsSystem extends FeatureModule {
 final class HudLayoutSystem extends FeatureModule {
     private static final String[] DEFAULTS={"anchor_top_left","anchor_top_right","anchor_bottom_left","anchor_bottom_right","anchor_center","scale","opacity","spacing","margin","drag_mode","snap_to_grid","hide_in_menus","hide_when_chat","compact","reset_layout"};
     HudLayoutSystem(){super("hud_layout",DEFAULTS);}
-    @Override synchronized String summary(){return "hud layout: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
+    @Override public synchronized String summary(){return "hud layout: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
     /** Read anchor top left preference. */
     synchronized boolean anchorTopLeftEnabled(){return option("anchor_top_left");}
     /** Update anchor top left preference. */
@@ -1575,7 +1575,7 @@ final class HudLayoutSystem extends FeatureModule {
 final class SoundCueSystem extends FeatureModule {
     private static final String[] DEFAULTS={"hit","critical","shield_raise","shield_break","totem_pop","low_health","combo_start","combo_end","loadout_swap","warning","pearl_ready","potion_ready","attack_ready","kill_confirm","menu_open","menu_close"};
     SoundCueSystem(){super("sound_cues",DEFAULTS);}
-    @Override synchronized String summary(){return "sound cues: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
+    @Override public synchronized String summary(){return "sound cues: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
     /** Read hit preference. */
     synchronized boolean hitEnabled(){return option("hit");}
     /** Update hit preference. */
@@ -1676,7 +1676,7 @@ final class SoundCueSystem extends FeatureModule {
 final class PerformanceSystem extends FeatureModule {
     private static final String[] DEFAULTS={"particle_budget","animation_budget","hud_refresh_rate","cache_enabled","low_end_mode","skip_hidden_widgets","throttle_target_scan","limit_combat_log","disable_shake","disable_blur","texture_cache","frame_time_sample","debug_overlay","metrics","auto_quality"};
     PerformanceSystem(){super("performance",DEFAULTS);}
-    @Override synchronized String summary(){return "performance: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
+    @Override public synchronized String summary(){return "performance: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
     /** Read particle budget preference. */
     synchronized boolean particleBudgetEnabled(){return option("particle_budget");}
     /** Update particle budget preference. */
@@ -1772,7 +1772,7 @@ final class PerformanceSystem extends FeatureModule {
 final class CombatLogSystem extends FeatureModule {
     private static final String[] DEFAULTS={"record_hits","record_damage","record_crits","record_totem_pops","record_shield_breaks","record_loadout_swaps","record_potions","record_projectiles","session_start","session_end","export_summary","clear_history","history_limit","group_events","privacy_mode"};
     CombatLogSystem(){super("combat_log",DEFAULTS);}
-    @Override synchronized String summary(){return "combat log: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
+    @Override public synchronized String summary(){return "combat log: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
     /** Read record hits preference. */
     synchronized boolean recordHitsEnabled(){return option("record_hits");}
     /** Update record hits preference. */
@@ -1868,7 +1868,7 @@ final class CombatLogSystem extends FeatureModule {
 final class ProfileSystem extends FeatureModule {
     private static final String[] DEFAULTS={"default","competitive","casual","minimal","high_visibility","streamer","low_end","crystal","shield","custom_a","custom_b","import_profile","export_profile","duplicate_profile","reset_profile","profile_lock"};
     ProfileSystem(){super("profiles",DEFAULTS);}
-    @Override synchronized String summary(){return "profiles: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
+    @Override public synchronized String summary(){return "profiles: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
     /** Read default preference. */
     synchronized boolean defaultEnabled(){return option("default");}
     /** Update default preference. */
@@ -1969,7 +1969,7 @@ final class ProfileSystem extends FeatureModule {
 final class WeaponDurabilitySystem extends FeatureModule {
     private static final String[] DEFAULTS={"sword","axe","bow","crossbow","trident","mace","shield","elytra","helmet","chestplate","leggings","boots","warning_25","warning_10","break_alert","repair_hint"};
     WeaponDurabilitySystem(){super("weapon_durability",DEFAULTS);}
-    @Override synchronized String summary(){return "weapon durability: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
+    @Override public synchronized String summary(){return "weapon durability: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
     /** Read sword preference. */
     synchronized boolean swordEnabled(){return option("sword");}
     /** Update sword preference. */
@@ -2070,7 +2070,7 @@ final class WeaponDurabilitySystem extends FeatureModule {
 final class ProjectileAssistantSystem extends FeatureModule {
     private static final String[] DEFAULTS={"arrow_ready","arrow_charge","trident_charge","pearl_ready","snowball_count","egg_count","wind_charge_count","trajectory_hint","projectile_warning","firework_count","water_bucket_hint","aim_sensitivity","throwable_hotbar","projectile_cooldown","hit_confirmation"};
     ProjectileAssistantSystem(){super("projectile_assist",DEFAULTS);}
-    @Override synchronized String summary(){return "projectile assist: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
+    @Override public synchronized String summary(){return "projectile assist: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
     /** Read arrow ready preference. */
     synchronized boolean arrowReadyEnabled(){return option("arrow_ready");}
     /** Update arrow ready preference. */
@@ -2166,7 +2166,7 @@ final class ProjectileAssistantSystem extends FeatureModule {
 final class MovementAssistantSystem extends FeatureModule {
     private static final String[] DEFAULTS={"sprint_state","jump_state","fall_distance","water_state","elytra_state","velocity_hint","knockback_direction","landing_warning","ledge_warning","strafe_hint","sprint_reset","climb_state","slow_fall","grounded_state","damage_window"};
     MovementAssistantSystem(){super("movement_assist",DEFAULTS);}
-    @Override synchronized String summary(){return "movement assist: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
+    @Override public synchronized String summary(){return "movement assist: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
     /** Read sprint state preference. */
     synchronized boolean sprintStateEnabled(){return option("sprint_state");}
     /** Update sprint state preference. */
@@ -2262,7 +2262,7 @@ final class MovementAssistantSystem extends FeatureModule {
 final class ResourceTrackerSystem extends FeatureModule {
     private static final String[] DEFAULTS={"pearls","crystals","obsidian","anchors","glowstone","arrows","food","blocks","water_buckets","totems","potions","wind_charges","fireworks","repair_materials","low_resource_alert"};
     ResourceTrackerSystem(){super("resource_tracker",DEFAULTS);}
-    @Override synchronized String summary(){return "resource tracker: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
+    @Override public synchronized String summary(){return "resource tracker: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
     /** Read pearls preference. */
     synchronized boolean pearlsEnabled(){return option("pearls");}
     /** Update pearls preference. */
@@ -2358,7 +2358,7 @@ final class ResourceTrackerSystem extends FeatureModule {
 final class FriendMarkerSystem extends FeatureModule {
     private static final String[] DEFAULTS={"friend_list","team_color","ally_crosshair","ally_nameplate","ally_target_exclusion","friend_import","friend_export","friend_add","friend_remove","team_sync","privacy_mode","offline_friends","friend_count","marker_opacity","marker_size"};
     FriendMarkerSystem(){super("friend_marker",DEFAULTS);}
-    @Override synchronized String summary(){return "friend marker: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
+    @Override public synchronized String summary(){return "friend marker: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
     /** Read friend list preference. */
     synchronized boolean friendListEnabled(){return option("friend_list");}
     /** Update friend list preference. */
@@ -2454,7 +2454,7 @@ final class FriendMarkerSystem extends FeatureModule {
 final class SessionStatsSystem extends FeatureModule {
     private static final String[] DEFAULTS={"kills","deaths","assists","hits","misses","damage_dealt","damage_taken","healing","totem_pops","pearls_used","arrows_hit","session_duration","win_streak","loss_streak","export_stats"};
     SessionStatsSystem(){super("session_stats",DEFAULTS);}
-    @Override synchronized String summary(){return "session stats: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
+    @Override public synchronized String summary(){return "session stats: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
     /** Read kills preference. */
     synchronized boolean killsEnabled(){return option("kills");}
     /** Update kills preference. */
@@ -2550,7 +2550,7 @@ final class SessionStatsSystem extends FeatureModule {
 final class AccessibilitySystem extends FeatureModule {
     private static final String[] DEFAULTS={"high_contrast","large_text","colorblind_palette","reduced_motion","disable_shake","subtitles","screen_reader_labels","keyboard_navigation","hold_to_toggle","sticky_keys","flash_limit","opacity_floor","scale_floor","reduce_particles","focus_outline"};
     AccessibilitySystem(){super("accessibility",DEFAULTS);}
-    @Override synchronized String summary(){return "accessibility: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
+    @Override public synchronized String summary(){return "accessibility: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
     /** Read high contrast preference. */
     synchronized boolean highContrastEnabled(){return option("high_contrast");}
     /** Update high contrast preference. */
@@ -2646,7 +2646,7 @@ final class AccessibilitySystem extends FeatureModule {
 final class LayoutPresetSystem extends FeatureModule {
     private static final String[] DEFAULTS={"classic","compact","wide","streamer","minimal","competitive","accessibility","top_left","top_right","bottom_left","bottom_right","restore_defaults","save_preset","delete_preset","duplicate_preset","active_preset"};
     LayoutPresetSystem(){super("layout_presets",DEFAULTS);}
-    @Override synchronized String summary(){return "layout presets: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
+    @Override public synchronized String summary(){return "layout presets: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
     /** Read classic preference. */
     synchronized boolean classicEnabled(){return option("classic");}
     /** Update classic preference. */
@@ -2747,7 +2747,7 @@ final class LayoutPresetSystem extends FeatureModule {
 final class WarningSystem extends FeatureModule {
     private static final String[] DEFAULTS={"low_health","low_armor","low_durability","low_food","low_totems","low_pearls","low_crystals","shield_broken","enemy_nearby","projectile_incoming","fire","fall_damage","void_edge","negative_effect","inventory_full"};
     WarningSystem(){super("warnings",DEFAULTS);}
-    @Override synchronized String summary(){return "warnings: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
+    @Override public synchronized String summary(){return "warnings: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
     /** Read low health preference. */
     synchronized boolean lowHealthEnabled(){return option("low_health");}
     /** Update low health preference. */
@@ -2843,7 +2843,7 @@ final class WarningSystem extends FeatureModule {
 final class TrainingSystem extends FeatureModule {
     private static final String[] DEFAULTS={"attack_timing","shield_timing","crit_timing","hotbar_drill","pearl_practice","aim_practice","combo_practice","strafe_practice","inventory_drill","totem_drill","session_timer","accuracy_score","reaction_time","practice_notes","training_history"};
     TrainingSystem(){super("training",DEFAULTS);}
-    @Override synchronized String summary(){return "training: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
+    @Override public synchronized String summary(){return "training: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
     /** Read attack timing preference. */
     synchronized boolean attackTimingEnabled(){return option("attack_timing");}
     /** Update attack timing preference. */
@@ -2939,7 +2939,7 @@ final class TrainingSystem extends FeatureModule {
 final class PrivacySystem extends FeatureModule {
     private static final String[] DEFAULTS={"hide_coordinates","hide_target_names","hide_session_stats","streamer_mode","hide_server_address","hide_chat_overlay","mask_player_names","disable_exports","local_only_data","clear_local_history","private_profile","hide_latency","hide_fps","hide_combat_log","privacy_banner"};
     PrivacySystem(){super("privacy",DEFAULTS);}
-    @Override synchronized String summary(){return "privacy: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
+    @Override public synchronized String summary(){return "privacy: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
     /** Read hide coordinates preference. */
     synchronized boolean hideCoordinatesEnabled(){return option("hide_coordinates");}
     /** Update hide coordinates preference. */
@@ -3035,7 +3035,7 @@ final class PrivacySystem extends FeatureModule {
 final class NotificationSystem extends FeatureModule {
     private static final String[] DEFAULTS={"loadout_changed","low_health","totem_used","shield_broken","weapon_low_durability","pearl_ready","potion_ready","combat_started","combat_ended","friend_joined","friend_left","profile_changed","settings_saved","settings_error","warning_queue"};
     NotificationSystem(){super("notifications",DEFAULTS);}
-    @Override synchronized String summary(){return "notifications: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
+    @Override public synchronized String summary(){return "notifications: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
     /** Read loadout changed preference. */
     synchronized boolean loadoutChangedEnabled(){return option("loadout_changed");}
     /** Update loadout changed preference. */
@@ -3131,7 +3131,7 @@ final class NotificationSystem extends FeatureModule {
 final class QuickActionSystem extends FeatureModule {
     private static final String[] DEFAULTS={"swap_loadout","toggle_hud","toggle_crosshair","mark_friend","mark_enemy","open_settings","reset_hud","show_stats","clear_log","save_profile","restore_profile","cycle_crosshair","hide_overlays","panic_hide","help"};
     QuickActionSystem(){super("quick_actions",DEFAULTS);}
-    @Override synchronized String summary(){return "quick actions: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
+    @Override public synchronized String summary(){return "quick actions: "+enabledOptionCount()+"/"+optionCount()+" options; "+(isEnabled()?"enabled":"disabled");}
     /** Read swap loadout preference. */
     synchronized boolean swapLoadoutEnabled(){return option("swap_loadout");}
     /** Update swap loadout preference. */
