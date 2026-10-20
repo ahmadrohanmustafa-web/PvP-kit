@@ -1,0 +1,6 @@
+{
+  "key.category.pvpkit": "PvP-kit",
+  "pvpkit.title": "PvP-kit",
+  "pvpkit.status.ready": "PvP-kit core initialized",
+  "pvpkit.status.client_only": "Client-side companion; server rules are unchanged"
+}
