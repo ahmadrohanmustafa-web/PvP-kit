@@ -1,6 +1,6 @@
 package dev.ahmadrohan.pvpkit.mixin;
 
-import com.mojang.blaze3d.pipeline.RenderPipeline;
+import com.mojang.renderpearl.api.pipeline.RenderPipeline;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.resources.Identifier;
@@ -18,7 +18,7 @@ public abstract class InventoryScreenMixin {
         method = "extractBackground",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;blit(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIFFIIII)V"
+            target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;blit(Lcom/mojang/renderpearl/api/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIFFIIII)V"
         )
     )
     private void pvpkit$makeInventoryPanelTransparent(
