@@ -6,5 +6,7 @@
   "key.pvpkit.toggle_crosshair": "Toggle custom PvP crosshair",
   "pvpkit.title": "PvP-kit",
   "pvpkit.status.ready": "PvP-kit HUD and controls initialized",
-  "pvpkit.status.client_only": "Client-side companion; server rules are unchanged"
+  "pvpkit.status.client_only": "Client-side companion; server rules are unchanged",
+  "key.pvpkit.toggle_brightness": "Toggle brightness boost",
+  "key.pvpkit.performance_mode": "Toggle low-FX mode"
 }
