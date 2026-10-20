@@ -38,6 +38,8 @@ public final class PvpKitClient implements ClientModInitializer {
     private static boolean customCrosshair = true;
     private static long lastHitFeedbackAt = 0L;
     private static int lastSelectedSlot = -1;
+    private static String statusMessage = "PvP-kit ready";
+    private static long statusMessageUntil = 0L;
 
     private static final KeyMapping.Category CATEGORY = KeyMapping.Category.register(
         Identifier.fromNamespaceAndPath(MOD_ID, "controls")
@@ -70,27 +72,25 @@ public final class PvpKitClient implements ClientModInitializer {
             while (MENU_KEY.consumeClick()) {
                 hudVisible = !hudVisible;
                 if (client.player != null) {
-                    client.player.displayClientMessage(Component.literal(
-                        hudVisible ? "§bPvP-kit §7» §aHUD / kit panel opened" : "§bPvP-kit §7» §cHUD hidden"
-                    ), true);
+                    showStatus(hudVisible ? "HUD / kit panel enabled" : "HUD hidden");
                 }
             }
             while (HUD_KEY.consumeClick()) {
                 hudVisible = !hudVisible;
                 if (client.player != null) {
-                    client.player.displayClientMessage(Component.literal("§bPvP-kit §7» HUD " + (hudVisible ? "§aON" : "§cOFF")), true);
+                    showStatus("HUD " + (hudVisible ? "ON" : "OFF"));
                 }
             }
             while (CROSSHAIR_KEY.consumeClick()) {
                 customCrosshair = !customCrosshair;
                 if (client.player != null) {
-                    client.player.displayClientMessage(Component.literal("§bPvP-kit §7» Crosshair " + (customCrosshair ? "§aON" : "§cOFF")), true);
+                    showStatus("Crosshair " + (customCrosshair ? "ON" : "OFF"));
                 }
             }
             while (NEXT_LOADOUT_KEY.consumeClick()) {
                 loadoutIndex = (loadoutIndex + 1) % LOADOUTS.length;
                 if (client.player != null) {
-                    client.player.displayClientMessage(Component.literal("§bPvP-kit §7» Loadout: §f" + LOADOUTS[loadoutIndex]), true);
+                    showStatus("Loadout: " + LOADOUTS[loadoutIndex]);
                 }
             }
             if (client.player != null) {
@@ -110,14 +110,14 @@ public final class PvpKitClient implements ClientModInitializer {
     private static void renderHud(GuiGraphicsExtractor graphics, DeltaTracker tickCounter) {
         Minecraft client = Minecraft.getInstance();
         Player player = client.player;
-        if (player == null || client.level == null || client.options.hideGui) return;
+        if (player == null || client.level == null) return;
 
         int width = client.getWindow().getGuiScaledWidth();
         int height = client.getWindow().getGuiScaledHeight();
         long now = Util.getMillis();
 
         // Animated, outlined center crosshair. This is an overlay and does not alter aiming.
-        if (customCrosshair && client.screen == null) {
+        if (customCrosshair && client.gui.screen() == null) {
             float pulse = (Mth.sin((now % 1000L) / 1000.0F * Mth.TWO_PI) + 1.0F) * 0.5F;
             int gap = 4 + (int)(pulse * 2.0F);
             int color = player.isUsingItem() ? 0xFFFFC857 : 0xFF55F2C7;
@@ -151,7 +151,7 @@ public final class PvpKitClient implements ClientModInitializer {
         graphics.fill(x + 7, y + 33, x + 146, y + 38, 0xFF303B4A);
         if (maxHealth > 0.0F) graphics.fill(x + 7, y + 33, x + 7 + (int)(139 * Mth.clamp(health / maxHealth, 0.0F, 1.0F)), y + 38, healthColor);
         graphics.text(client.font, "Armor " + player.getArmorValue() + "   Food " + player.getFoodData().getFoodLevel(), x + 7, y + 42, 0xFFE3EAF4, true);
-        graphics.text(client.font, "Totems " + player.getInventory().count(Items.TOTEM_OF_UNDYING)
+        graphics.text(client.font, "Totems " + player.getInventory().countItem(Items.TOTEM_OF_UNDYING)
             + "   Shield " + (player.isBlocking() ? "BLOCKING" : hasShield(player) ? "READY" : "NONE"),
             x + 7, y + 55, 0xFFE3EAF4, true);
         graphics.text(client.font, "Sword / item: " + selectedItemName(player), x + 7, y + 66, 0xFFB6C7D9, false);
@@ -184,6 +184,11 @@ public final class PvpKitClient implements ClientModInitializer {
             graphics.text(client.font, "J  Toggle HUD", width - 134, 53, 0xFFFFFFFF, false);
             graphics.text(client.font, "K  Crosshair", width - 134, 65, 0xFFFFFFFF, false);
         }
+    }
+
+    private static void showStatus(String message) {
+        statusMessage = message;
+        statusMessageUntil = Util.getMillis() + 2200L;
     }
 
     private static boolean hasShield(Player player) {
