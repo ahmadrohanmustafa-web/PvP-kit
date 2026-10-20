@@ -228,7 +228,7 @@ public final class PvpKitClient implements ClientModInitializer {
         int armorX = Math.max(2, cx - 91 - armorSlotSize - 7);
         int armorTop = height - 4 - (armorSlotSize * 4 + armorGap * 3);
         EquipmentSlot[] armorSlots = {EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET}; // top to bottom
-        for (int i = 0; i < armorIndices.length; i++) {
+        for (int i = 0; i < armorSlots.length; i++) {
             int slotY = armorTop + i * (armorSlotSize + armorGap);
             graphics.fill(armorX, slotY, armorX + armorSlotSize, slotY + armorSlotSize, 0xB010151D);
             graphics.fill(armorX, slotY, armorX + armorSlotSize, slotY + 1, 0x805B6A7D);
