@@ -15,6 +15,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
@@ -226,12 +227,12 @@ public final class PvpKitClient implements ClientModInitializer {
         int armorGap = 2;
         int armorX = Math.max(2, cx - 91 - armorSlotSize - 7);
         int armorTop = height - 4 - (armorSlotSize * 4 + armorGap * 3);
-        int[] armorIndices = {3, 2, 1, 0}; // helmet, chestplate, leggings, boots
+        EquipmentSlot[] armorSlots = {EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET}; // top to bottom
         for (int i = 0; i < armorIndices.length; i++) {
             int slotY = armorTop + i * (armorSlotSize + armorGap);
             graphics.fill(armorX, slotY, armorX + armorSlotSize, slotY + armorSlotSize, 0xB010151D);
             graphics.fill(armorX, slotY, armorX + armorSlotSize, slotY + 1, 0x805B6A7D);
-            ItemStack armorStack = player.getInventory().armor.get(armorIndices[i]);
+            ItemStack armorStack = player.getItemBySlot(armorSlots[i]);
             if (!armorStack.isEmpty()) {
                 graphics.item(armorStack, armorX, slotY);
                 if (armorStack.isDamageableItem() && armorStack.getMaxDamage() > 0) {
