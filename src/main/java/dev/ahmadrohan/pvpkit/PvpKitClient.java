@@ -14,6 +14,7 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.util.Mth;
@@ -36,6 +37,11 @@ public final class PvpKitClient implements ClientModInitializer {
     private static int loadoutIndex = 0;
     private static boolean hudVisible = true;
     private static boolean customCrosshair = true;
+    private static boolean fullBright = false;
+    private static double previousGamma = 1.0;
+    private static boolean lowFxMode = true;
+    private static int previousHotbarSlot = -1;
+    private static long slotChangeAt = 0L;
     private static long lastHitFeedbackAt = 0L;
     private static int lastSelectedSlot = -1;
     private static String statusMessage = "PvP-kit ready";
@@ -55,6 +61,12 @@ public final class PvpKitClient implements ClientModInitializer {
     ));
     private static final KeyMapping CROSSHAIR_KEY = KeyMappingHelper.registerKeyMapping(new KeyMapping(
         "key.pvpkit.toggle_crosshair", InputConstants.Type.KEYBOARD, InputConstants.KEY_K, CATEGORY
+    ));
+    private static final KeyMapping BRIGHTNESS_KEY = KeyMappingHelper.registerKeyMapping(new KeyMapping(
+        "key.pvpkit.toggle_brightness", InputConstants.Type.KEYBOARD, InputConstants.KEY_G, CATEGORY
+    ));
+    private static final KeyMapping PERFORMANCE_KEY = KeyMappingHelper.registerKeyMapping(new KeyMapping(
+        "key.pvpkit.performance_mode", InputConstants.Type.KEYBOARD, InputConstants.KEY_P, CATEGORY
     ));
 
     @Override
@@ -83,9 +95,25 @@ public final class PvpKitClient implements ClientModInitializer {
             }
             while (CROSSHAIR_KEY.consumeClick()) {
                 customCrosshair = !customCrosshair;
+                if (client.player != null) showStatus("Crosshair " + (customCrosshair ? "ON" : "OFF"));
+            }
+            while (BRIGHTNESS_KEY.consumeClick()) {
                 if (client.player != null) {
-                    showStatus("Crosshair " + (customCrosshair ? "ON" : "OFF"));
+                    if (!fullBright) {
+                        previousGamma = client.options.gamma().get();
+                        client.options.gamma().set(1.0);
+                        fullBright = true;
+                        showStatus("Brightness boost ON");
+                    } else {
+                        client.options.gamma().set(previousGamma);
+                        fullBright = false;
+                        showStatus("Brightness restored");
+                    }
                 }
+            }
+            while (PERFORMANCE_KEY.consumeClick()) {
+                lowFxMode = !lowFxMode;
+                showStatus("Low-FX mode " + (lowFxMode ? "ON" : "OFF"));
             }
             while (NEXT_LOADOUT_KEY.consumeClick()) {
                 loadoutIndex = (loadoutIndex + 1) % LOADOUTS.length;
@@ -110,79 +138,78 @@ public final class PvpKitClient implements ClientModInitializer {
     private static void renderHud(GuiGraphicsExtractor graphics, DeltaTracker tickCounter) {
         Minecraft client = Minecraft.getInstance();
         Player player = client.player;
-        if (player == null || client.level == null) return;
+        if (player == null || client.level == null || client.gui.screen() != null) return;
 
         int width = client.getWindow().getGuiScaledWidth();
         int height = client.getWindow().getGuiScaledHeight();
         long now = Util.getMillis();
+        int cx = width / 2;
+        int cy = height / 2;
 
-        // Animated, outlined center crosshair. This is an overlay and does not alter aiming.
-        if (customCrosshair && client.gui.screen() == null) {
-            float pulse = (Mth.sin((now % 1000L) / 1000.0F * Mth.TWO_PI) + 1.0F) * 0.5F;
-            int gap = 4 + (int)(pulse * 2.0F);
-            int color = player.isUsingItem() ? 0xFFFFC857 : 0xFF55F2C7;
-            int cx = width / 2;
-            int cy = height / 2;
-            graphics.fill(cx - gap - 5, cy - 1, cx - gap, cy + 1, 0xB0000000);
-            graphics.fill(cx + gap, cy - 1, cx + gap + 5, cy + 1, 0xB0000000);
-            graphics.fill(cx - 1, cy - gap - 5, cx + 1, cy - gap, 0xB0000000);
-            graphics.fill(cx - 1, cy + gap, cx + 1, cy + gap + 5, 0xB0000000);
-            graphics.fill(cx - gap - 4, cy, cx - gap, cy + 1, color);
-            graphics.fill(cx + gap, cy, cx + gap + 4, cy + 1, color);
-            graphics.fill(cx, cy - gap - 4, cx + 1, cy - gap, color);
-            graphics.fill(cx, cy + gap, cx + 1, cy + gap + 4, color);
-            graphics.fill(cx - 1, cy - 1, cx + 2, cy + 2, 0xFFFFFFFF);
+        // Tiny precision reticle; target feedback uses the actual entity under Minecraft's crosshair.
+        if (customCrosshair) {
+            boolean targetingLiving = client.crosshairPickEntity instanceof LivingEntity target && target.isAlive();
+            int color = targetingLiving ? 0xFF65FF91 : player.isUsingItem() ? 0xFFFFD166 : 0xFFEAF2FF;
+            int arm = lowFxMode ? 2 : 3;
+            graphics.fill(cx - arm - 2, cy, cx - 2, cy + 1, 0xA0000000);
+            graphics.fill(cx + 2, cy, cx + arm + 2, cy + 1, 0xA0000000);
+            graphics.fill(cx, cy - arm - 2, cx + 1, cy - 2, 0xA0000000);
+            graphics.fill(cx, cy + 2, cx + 1, cy + arm + 2, 0xA0000000);
+            graphics.fill(cx - arm - 1, cy, cx - 2, cy + 1, color);
+            graphics.fill(cx + 2, cy, cx + arm + 1, cy + 1, color);
+            graphics.fill(cx, cy - arm - 1, cx + 1, cy - 2, color);
+            graphics.fill(cx, cy + 2, cx + 1, cy + arm + 1, color);
+            graphics.fill(cx, cy, cx + 1, cy + 1, 0xFFFFFFFF);
+
+            // Small corner ticks only appear when a living entity is actually under aim.
+            if (targetingLiving) {
+                int pulse = lowFxMode ? 0 : (int)((now / 180L) % 2L);
+                graphics.fill(cx - 5 - pulse, cy - 5 - pulse, cx - 3, cy - 4, 0xCC65FF91);
+                graphics.fill(cx + 4, cy - 5 - pulse, cx + 6 + pulse, cy - 4, 0xCC65FF91);
+                graphics.fill(cx - 5 - pulse, cy + 4, cx - 3, cy + 5 + pulse, 0xCC65FF91);
+                graphics.fill(cx + 4, cy + 4, cx + 6 + pulse, cy + 5 + pulse, 0xCC65FF91);
+            }
         }
 
         if (!hudVisible) return;
 
-        // Top-left compact combat card.
-        int x = 8;
-        int y = 8;
-        graphics.fill(x, y, x + 154, y + 76, 0xB8101825);
-        graphics.fill(x, y, x + 154, y + 2, 0xFF55F2C7);
-        graphics.outline(x, y, 154, 76, 0xAA55F2C7);
-        graphics.text(client.font, "PVP-KIT  /  " + LOADOUTS[loadoutIndex], x + 7, y + 7, 0xFFFFFFFF, true);
-
-        float health = player.getHealth();
-        float maxHealth = player.getMaxHealth();
-        int healthColor = health <= 6.0F ? 0xFFFF5555 : health <= 10.0F ? 0xFFFFC857 : 0xFF70F0A8;
-        graphics.text(client.font, "❤ " + Mth.ceil(health) + "/" + Mth.ceil(maxHealth), x + 7, y + 21, healthColor, true);
-        graphics.fill(x + 7, y + 33, x + 146, y + 38, 0xFF303B4A);
-        if (maxHealth > 0.0F) graphics.fill(x + 7, y + 33, x + 7 + (int)(139 * Mth.clamp(health / maxHealth, 0.0F, 1.0F)), y + 38, healthColor);
-        graphics.text(client.font, "Armor " + player.getArmorValue() + "   Food " + player.getFoodData().getFoodLevel(), x + 7, y + 42, 0xFFE3EAF4, true);
-        graphics.text(client.font, "Totems " + player.getInventory().countItem(Items.TOTEM_OF_UNDYING)
-            + "   Shield " + (player.isBlocking() ? "BLOCKING" : hasShield(player) ? "READY" : "NONE"),
-            x + 7, y + 55, 0xFFE3EAF4, true);
-        graphics.text(client.font, "Sword / item: " + selectedItemName(player), x + 7, y + 66, 0xFFB6C7D9, false);
-
-        // Cooldown meter and key reminder along the bottom-left.
-        int bx = 8;
-        int by = height - 30;
+        // A compact strip just above the vanilla hotbar; no large corner dashboard.
+        int stripY = height - 58;
+        String held = selectedItemName(player);
+        int totems = player.getInventory().countItem(Items.TOTEM_OF_UNDYING);
+        boolean shield = hasShield(player);
         float cooldown = player.getAttackStrengthScale(0.0F);
-        graphics.fill(bx, by, bx + 124, by + 12, 0xB8101825);
-        graphics.fill(bx + 2, by + 2, bx + 120, by + 10, 0xFF303B4A);
-        graphics.fill(bx + 2, by + 2, bx + 2 + (int)(118 * Mth.clamp(cooldown, 0.0F, 1.0F)), by + 10,
-            cooldown >= 0.9F ? 0xFF55F2C7 : 0xFFFFC857);
-        graphics.text(client.font, "ATTACK " + Mth.floor(cooldown * 100.0F) + "%", bx + 130, by + 2, 0xFFFFFFFF, true);
+        String status = held + "   |   Totems " + totems + "   |   Shield " + (player.isBlocking() ? "BLOCKING" : shield ? "READY" : "—");
+        int textWidth = client.font.width(status);
+        int left = Math.max(4, (width - textWidth) / 2 - 7);
+        graphics.fill(left, stripY - 3, Math.min(width - 4, left + textWidth + 14), stripY + 11, 0x760B111A);
+        graphics.text(client.font, status, left + 7, stripY, shield ? 0xFFE9F6FF : 0xFFCCD5E0, true);
 
-        if (now - lastHitFeedbackAt < 220L) {
-            graphics.fill(width / 2 - 10, height / 2 - 12, width / 2 + 10, height / 2 - 10, 0xFFFFC857);
-        }
-        if (health <= 6.0F) {
-            graphics.fill(width - 132, 8, width - 8, 30, 0xD8A3212B);
-            graphics.text(client.font, "LOW HEALTH!", width - 124, 15, 0xFFFFFFFF, true);
+        // Minimal cooldown bar in the sightline, not in a screen corner.
+        int barWidth = 42;
+        int barX = cx - barWidth / 2;
+        int barY = stripY - 9;
+        graphics.fill(barX, barY, barX + barWidth, barY + 2, 0x66000000);
+        graphics.fill(barX, barY, barX + (int)(barWidth * Mth.clamp(cooldown, 0.0F, 1.0F)), barY + 2,
+            cooldown >= 0.9F ? 0xFF65FF91 : 0xFFFFD166);
+
+        if (player.getHealth() <= 4.0F) {
+            graphics.text(client.font, "LOW HP", cx + 12, cy + 9, 0xFFFF6666, true);
         }
 
-        // H opens/closes the quick panel. It remains a HUD overlay so it works without optional GUI libraries.
-        if (client.gui.screen() == null) {
-            graphics.fill(width - 142, 8, width - 8, 76, 0xA8101825);
-            graphics.outline(width - 142, 8, 134, 68, 0x8855F2C7);
-            graphics.text(client.font, "PvP KIT KEYS", width - 134, 15, 0xFF55F2C7, true);
-            graphics.text(client.font, "H  Kit panel / HUD", width - 134, 29, 0xFFFFFFFF, false);
-            graphics.text(client.font, "N  Next loadout", width - 134, 41, 0xFFFFFFFF, false);
-            graphics.text(client.font, "J  Toggle HUD", width - 134, 53, 0xFFFFFFFF, false);
-            graphics.text(client.font, "K  Crosshair", width - 134, 65, 0xFFFFFFFF, false);
+        int selectedSlot = player.getInventory().getSelectedSlot();
+        if (selectedSlot != previousHotbarSlot) {
+            previousHotbarSlot = selectedSlot;
+            slotChangeAt = now;
+        }
+        if (!lowFxMode && now - slotChangeAt < 120L) {
+            int alpha = (int)(0x80 * (1.0F - (now - slotChangeAt) / 120.0F));
+            graphics.fill(cx - 10, stripY - 5, cx + 10, stripY - 4, (alpha << 24) | 0x65FF91);
+        }
+
+        if (now < statusMessageUntil && statusMessage != null && !statusMessage.isBlank()) {
+            int messageWidth = client.font.width(statusMessage);
+            graphics.text(client.font, statusMessage, (width - messageWidth) / 2, height - 74, 0xFFEAF2FF, true);
         }
     }
 
