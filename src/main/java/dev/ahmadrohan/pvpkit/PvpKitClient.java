@@ -175,7 +175,7 @@ public final class PvpKitClient implements ClientModInitializer {
         }
 
         // H opens/closes the quick panel. It remains a HUD overlay so it works without optional GUI libraries.
-        if (client.screen == null) {
+        if (client.gui.screen() == null) {
             graphics.fill(width - 142, 8, width - 8, 76, 0xA8101825);
             graphics.outline(width - 142, 8, 134, 68, 0x8855F2C7);
             graphics.text(client.font, "PvP KIT KEYS", width - 134, 15, 0xFF55F2C7, true);
