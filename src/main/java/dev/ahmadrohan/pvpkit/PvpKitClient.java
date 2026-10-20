@@ -156,18 +156,18 @@ public final class PvpKitClient implements ClientModInitializer {
         int cx = width / 2;
         int cy = height / 2;
 
-        // Probe up to four blocks along the view ray so the indicator can also show red
+        // Probe up to six blocks along the view ray so the indicator can show red
         // when a living target is visible but still outside the configured threshold.
         // This is visual-only and does not alter Minecraft's attack reach or server rules.
         float partialTick = tickCounter.getGameTimeDeltaPartialTick(false);
         Vec3 eye = player.getEyePosition(partialTick);
         Vec3 view = player.getViewVector(partialTick);
-        Vec3 rayEnd = eye.add(view.scale(4.0D));
-        AABB searchBox = player.getBoundingBox().expandTowards(view.scale(4.0D)).inflate(1.0D);
+        Vec3 rayEnd = eye.add(view.scale(6.0D));
+        AABB searchBox = player.getBoundingBox().expandTowards(view.scale(6.0D)).inflate(1.0D);
         EntityHitResult reachHit = ProjectileUtil.getEntityHitResult(
             player, eye, rayEnd, searchBox,
             entity -> entity instanceof LivingEntity && entity.isAlive() && entity != player,
-            16.0D
+            36.0D
         );
         LivingEntity aimedTarget = reachHit != null && reachHit.getEntity() instanceof LivingEntity living ? living : null;
         boolean targetingLiving = aimedTarget != null;
