@@ -20,3 +20,9 @@ jobs:
           gradle-version: "9.8.2"
       - name: Build mod
         run: gradle build --no-daemon
+      - name: Upload mod JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: pvp-kit-mod
+          path: build/libs/pvp-kit-1.0.0.jar
+          if-no-files-found: error
