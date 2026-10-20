@@ -152,10 +152,14 @@ public final class PvpKitClient implements ClientModInitializer {
         int cx = width / 2;
         int cy = height / 2;
 
+        // Reach feedback is informational only: it does not change vanilla/server attack reach.
+        boolean targetingLiving = client.crosshairPickEntity instanceof LivingEntity target && target.isAlive();
+        LivingEntity aimedTarget = targetingLiving ? (LivingEntity) client.crosshairPickEntity : null;
+        boolean targetInReach = aimedTarget != null && player.distanceToSqr(aimedTarget) <= 16.0D;
+
         // Tiny precision reticle; target feedback uses the actual entity under Minecraft's crosshair.
         if (customCrosshair) {
-            boolean targetingLiving = client.crosshairPickEntity instanceof LivingEntity target && target.isAlive();
-            int color = targetingLiving ? 0xFF65FF91 : player.isUsingItem() ? 0xFFFFD166 : 0xFFEAF2FF;
+            int color = targetingLiving ? (targetInReach ? 0xFF65FF91 : 0xFFFF5555) : player.isUsingItem() ? 0xFFFFD166 : 0xFFEAF2FF;
             int arm = lowFxMode ? 2 : 3;
             graphics.fill(cx - arm - 2, cy, cx - 2, cy + 1, 0xA0000000);
             graphics.fill(cx + 2, cy, cx + arm + 2, cy + 1, 0xA0000000);
@@ -167,13 +171,21 @@ public final class PvpKitClient implements ClientModInitializer {
             graphics.fill(cx, cy + 2, cx + 1, cy + arm + 1, color);
             graphics.fill(cx, cy, cx + 1, cy + 1, 0xFFFFFFFF);
 
-            // Small corner ticks only appear when a living entity is actually under aim.
+            // Small corner ticks show target lock. Their color also reflects the 4-block threshold.
             if (targetingLiving) {
+                int tickColor = targetInReach ? 0xCC65FF91 : 0xCCFF5555;
                 int pulse = lowFxMode ? 0 : (int)((now / 180L) % 2L);
-                graphics.fill(cx - 5 - pulse, cy - 5 - pulse, cx - 3, cy - 4, 0xCC65FF91);
-                graphics.fill(cx + 4, cy - 5 - pulse, cx + 6 + pulse, cy - 4, 0xCC65FF91);
-                graphics.fill(cx - 5 - pulse, cy + 4, cx - 3, cy + 5 + pulse, 0xCC65FF91);
-                graphics.fill(cx + 4, cy + 4, cx + 6 + pulse, cy + 5 + pulse, 0xCC65FF91);
+                graphics.fill(cx - 5 - pulse, cy - 5 - pulse, cx - 3, cy - 4, tickColor);
+                graphics.fill(cx + 4, cy - 5 - pulse, cx + 6 + pulse, cy - 4, tickColor);
+                graphics.fill(cx - 5 - pulse, cy + 4, cx - 3, cy + 5 + pulse, tickColor);
+                graphics.fill(cx + 4, cy + 4, cx + 6 + pulse, cy + 5 + pulse, tickColor);
+            }
+
+            // Tiny translucent reach bar: crosshair-width only, 25% opacity.
+            if (targetingLiving) {
+                int reachColor = targetInReach ? 0x4065FF91 : 0x40FF5555;
+                graphics.fill(cx - 3, cy + 7, cx + 4, cy + 9, 0x40000000);
+                graphics.fill(cx - 3, cy + 7, cx + 4, cy + 9, reachColor);
             }
         }
 
@@ -191,13 +203,32 @@ public final class PvpKitClient implements ClientModInitializer {
         graphics.fill(left, stripY - 3, Math.min(width - 4, left + textWidth + 14), stripY + 11, 0x760B111A);
         graphics.text(client.font, status, left + 7, stripY, shield ? 0xFFE9F6FF : 0xFFCCD5E0, true);
 
-        // Minimal cooldown bar in the sightline, not in a screen corner.
-        int barWidth = 42;
-        int barX = cx - barWidth / 2;
-        int barY = stripY - 9;
-        graphics.fill(barX, barY, barX + barWidth, barY + 2, 0x66000000);
-        graphics.fill(barX, barY, barX + (int)(barWidth * Mth.clamp(cooldown, 0.0F, 1.0F)), barY + 2,
-            cooldown >= 0.9F ? 0xFF65FF91 : 0xFFFFD166);
+        // Keep vanilla's attack indicator in its original position; do not draw a duplicate custom bar.
+
+        // Four compact, dark armor slots stacked vertically just left of the vanilla hotbar.
+        int armorSlotSize = 16;
+        int armorGap = 2;
+        int armorX = Math.max(2, cx - 91 - armorSlotSize - 7);
+        int armorTop = height - 4 - (armorSlotSize * 4 + armorGap * 3);
+        int[] armorIndices = {3, 2, 1, 0}; // helmet, chestplate, leggings, boots
+        for (int i = 0; i < armorIndices.length; i++) {
+            int slotY = armorTop + i * (armorSlotSize + armorGap);
+            graphics.fill(armorX, slotY, armorX + armorSlotSize, slotY + armorSlotSize, 0xB010151D);
+            graphics.fill(armorX, slotY, armorX + armorSlotSize, slotY + 1, 0x805B6A7D);
+            ItemStack armorStack = player.getInventory().getArmor(armorIndices[i]);
+            if (!armorStack.isEmpty()) {
+                graphics.item(armorStack, armorX, slotY);
+                if (armorStack.isDamageableItem() && armorStack.getMaxDamage() > 0) {
+                    float remaining = 1.0F - (float) armorStack.getDamageValue() / (float) armorStack.getMaxDamage();
+                    int durabilityWidth = Mth.clamp((int) (14 * remaining), 0, 14);
+                    int durabilityColor = remaining > 0.5F ? 0xFF65FF91 : remaining > 0.2F ? 0xFFFFD166 : 0xFFFF5555;
+                    graphics.fill(armorX + 1, slotY + 14, armorX + 15, slotY + 15, 0xFF252A31);
+                    if (durabilityWidth > 0) graphics.fill(armorX + 1, slotY + 14, armorX + 1 + durabilityWidth, slotY + 15, durabilityColor);
+                }
+            } else {
+                graphics.text(client.font, new String[]{"H", "C", "L", "B"}[i], armorX + 5, slotY + 4, 0xFF687382, false);
+            }
+        }
 
         if (player.getHealth() <= 4.0F) {
             graphics.text(client.font, "LOW HP", cx + 12, cy + 9, 0xFFFF6666, true);
