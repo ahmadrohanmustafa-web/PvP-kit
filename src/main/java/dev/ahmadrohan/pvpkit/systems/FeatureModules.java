@@ -98,8 +98,8 @@ final class CrosshairSystem extends FeatureModule {
     synchronized String diagnostics(){return id()+"[enabled="+isEnabled()+", active="+enabledOptionCount()+"/"+optionCount()+", revision="+revision()+"]";}
     synchronized boolean accepts(Map<String,Boolean> proposed){if(proposed==null||proposed.size()>DEFAULTS.length)return false;for(var e:proposed.entrySet())if(e.getKey()==null||e.getValue()==null||!hasOption(e.getKey()))return false;return true;}
     synchronized boolean apply(Map<String,Boolean> proposed){if(!accepts(proposed))return false;proposed.forEach(this::setOption);return true;}
-    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\\n').append("enabled=").append(isEnabled()).append('\\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\\n'));return b.toString();}
-    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
+    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\n').append("enabled=").append(isEnabled()).append('\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\n'));return b.toString();}
+    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
 }
 
 final class CombatHudSystem extends FeatureModule {
@@ -199,8 +199,8 @@ final class CombatHudSystem extends FeatureModule {
     synchronized String diagnostics(){return id()+"[enabled="+isEnabled()+", active="+enabledOptionCount()+"/"+optionCount()+", revision="+revision()+"]";}
     synchronized boolean accepts(Map<String,Boolean> proposed){if(proposed==null||proposed.size()>DEFAULTS.length)return false;for(var e:proposed.entrySet())if(e.getKey()==null||e.getValue()==null||!hasOption(e.getKey()))return false;return true;}
     synchronized boolean apply(Map<String,Boolean> proposed){if(!accepts(proposed))return false;proposed.forEach(this::setOption);return true;}
-    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\\n').append("enabled=").append(isEnabled()).append('\\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\\n'));return b.toString();}
-    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
+    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\n').append("enabled=").append(isEnabled()).append('\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\n'));return b.toString();}
+    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
 }
 
 final class LoadoutSystem extends FeatureModule {
@@ -300,8 +300,8 @@ final class LoadoutSystem extends FeatureModule {
     synchronized String diagnostics(){return id()+"[enabled="+isEnabled()+", active="+enabledOptionCount()+"/"+optionCount()+", revision="+revision()+"]";}
     synchronized boolean accepts(Map<String,Boolean> proposed){if(proposed==null||proposed.size()>DEFAULTS.length)return false;for(var e:proposed.entrySet())if(e.getKey()==null||e.getValue()==null||!hasOption(e.getKey()))return false;return true;}
     synchronized boolean apply(Map<String,Boolean> proposed){if(!accepts(proposed))return false;proposed.forEach(this::setOption);return true;}
-    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\\n').append("enabled=").append(isEnabled()).append('\\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\\n'));return b.toString();}
-    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
+    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\n').append("enabled=").append(isEnabled()).append('\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\n'));return b.toString();}
+    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
 }
 
 final class KeybindSystem extends FeatureModule {
@@ -401,8 +401,8 @@ final class KeybindSystem extends FeatureModule {
     synchronized String diagnostics(){return id()+"[enabled="+isEnabled()+", active="+enabledOptionCount()+"/"+optionCount()+", revision="+revision()+"]";}
     synchronized boolean accepts(Map<String,Boolean> proposed){if(proposed==null||proposed.size()>DEFAULTS.length)return false;for(var e:proposed.entrySet())if(e.getKey()==null||e.getValue()==null||!hasOption(e.getKey()))return false;return true;}
     synchronized boolean apply(Map<String,Boolean> proposed){if(!accepts(proposed))return false;proposed.forEach(this::setOption);return true;}
-    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\\n').append("enabled=").append(isEnabled()).append('\\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\\n'));return b.toString();}
-    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
+    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\n').append("enabled=").append(isEnabled()).append('\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\n'));return b.toString();}
+    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
 }
 
 final class AnimationSystem extends FeatureModule {
@@ -502,8 +502,8 @@ final class AnimationSystem extends FeatureModule {
     synchronized String diagnostics(){return id()+"[enabled="+isEnabled()+", active="+enabledOptionCount()+"/"+optionCount()+", revision="+revision()+"]";}
     synchronized boolean accepts(Map<String,Boolean> proposed){if(proposed==null||proposed.size()>DEFAULTS.length)return false;for(var e:proposed.entrySet())if(e.getKey()==null||e.getValue()==null||!hasOption(e.getKey()))return false;return true;}
     synchronized boolean apply(Map<String,Boolean> proposed){if(!accepts(proposed))return false;proposed.forEach(this::setOption);return true;}
-    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\\n').append("enabled=").append(isEnabled()).append('\\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\\n'));return b.toString();}
-    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
+    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\n').append("enabled=").append(isEnabled()).append('\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\n'));return b.toString();}
+    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
 }
 
 final class SwordAssistantSystem extends FeatureModule {
@@ -598,8 +598,8 @@ final class SwordAssistantSystem extends FeatureModule {
     synchronized String diagnostics(){return id()+"[enabled="+isEnabled()+", active="+enabledOptionCount()+"/"+optionCount()+", revision="+revision()+"]";}
     synchronized boolean accepts(Map<String,Boolean> proposed){if(proposed==null||proposed.size()>DEFAULTS.length)return false;for(var e:proposed.entrySet())if(e.getKey()==null||e.getValue()==null||!hasOption(e.getKey()))return false;return true;}
     synchronized boolean apply(Map<String,Boolean> proposed){if(!accepts(proposed))return false;proposed.forEach(this::setOption);return true;}
-    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\\n').append("enabled=").append(isEnabled()).append('\\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\\n'));return b.toString();}
-    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
+    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\n').append("enabled=").append(isEnabled()).append('\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\n'));return b.toString();}
+    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
 }
 
 final class ShieldAssistantSystem extends FeatureModule {
@@ -694,8 +694,8 @@ final class ShieldAssistantSystem extends FeatureModule {
     synchronized String diagnostics(){return id()+"[enabled="+isEnabled()+", active="+enabledOptionCount()+"/"+optionCount()+", revision="+revision()+"]";}
     synchronized boolean accepts(Map<String,Boolean> proposed){if(proposed==null||proposed.size()>DEFAULTS.length)return false;for(var e:proposed.entrySet())if(e.getKey()==null||e.getValue()==null||!hasOption(e.getKey()))return false;return true;}
     synchronized boolean apply(Map<String,Boolean> proposed){if(!accepts(proposed))return false;proposed.forEach(this::setOption);return true;}
-    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\\n').append("enabled=").append(isEnabled()).append('\\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\\n'));return b.toString();}
-    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
+    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\n').append("enabled=").append(isEnabled()).append('\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\n'));return b.toString();}
+    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
 }
 
 final class TotemAssistantSystem extends FeatureModule {
@@ -790,8 +790,8 @@ final class TotemAssistantSystem extends FeatureModule {
     synchronized String diagnostics(){return id()+"[enabled="+isEnabled()+", active="+enabledOptionCount()+"/"+optionCount()+", revision="+revision()+"]";}
     synchronized boolean accepts(Map<String,Boolean> proposed){if(proposed==null||proposed.size()>DEFAULTS.length)return false;for(var e:proposed.entrySet())if(e.getKey()==null||e.getValue()==null||!hasOption(e.getKey()))return false;return true;}
     synchronized boolean apply(Map<String,Boolean> proposed){if(!accepts(proposed))return false;proposed.forEach(this::setOption);return true;}
-    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\\n').append("enabled=").append(isEnabled()).append('\\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\\n'));return b.toString();}
-    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
+    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\n').append("enabled=").append(isEnabled()).append('\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\n'));return b.toString();}
+    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
 }
 
 final class PotionAssistantSystem extends FeatureModule {
@@ -886,8 +886,8 @@ final class PotionAssistantSystem extends FeatureModule {
     synchronized String diagnostics(){return id()+"[enabled="+isEnabled()+", active="+enabledOptionCount()+"/"+optionCount()+", revision="+revision()+"]";}
     synchronized boolean accepts(Map<String,Boolean> proposed){if(proposed==null||proposed.size()>DEFAULTS.length)return false;for(var e:proposed.entrySet())if(e.getKey()==null||e.getValue()==null||!hasOption(e.getKey()))return false;return true;}
     synchronized boolean apply(Map<String,Boolean> proposed){if(!accepts(proposed))return false;proposed.forEach(this::setOption);return true;}
-    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\\n').append("enabled=").append(isEnabled()).append('\\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\\n'));return b.toString();}
-    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
+    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\n').append("enabled=").append(isEnabled()).append('\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\n'));return b.toString();}
+    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
 }
 
 final class InventoryAssistantSystem extends FeatureModule {
@@ -982,8 +982,8 @@ final class InventoryAssistantSystem extends FeatureModule {
     synchronized String diagnostics(){return id()+"[enabled="+isEnabled()+", active="+enabledOptionCount()+"/"+optionCount()+", revision="+revision()+"]";}
     synchronized boolean accepts(Map<String,Boolean> proposed){if(proposed==null||proposed.size()>DEFAULTS.length)return false;for(var e:proposed.entrySet())if(e.getKey()==null||e.getValue()==null||!hasOption(e.getKey()))return false;return true;}
     synchronized boolean apply(Map<String,Boolean> proposed){if(!accepts(proposed))return false;proposed.forEach(this::setOption);return true;}
-    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\\n').append("enabled=").append(isEnabled()).append('\\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\\n'));return b.toString();}
-    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
+    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\n').append("enabled=").append(isEnabled()).append('\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\n'));return b.toString();}
+    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
 }
 
 final class TargetInfoSystem extends FeatureModule {
@@ -1078,8 +1078,8 @@ final class TargetInfoSystem extends FeatureModule {
     synchronized String diagnostics(){return id()+"[enabled="+isEnabled()+", active="+enabledOptionCount()+"/"+optionCount()+", revision="+revision()+"]";}
     synchronized boolean accepts(Map<String,Boolean> proposed){if(proposed==null||proposed.size()>DEFAULTS.length)return false;for(var e:proposed.entrySet())if(e.getKey()==null||e.getValue()==null||!hasOption(e.getKey()))return false;return true;}
     synchronized boolean apply(Map<String,Boolean> proposed){if(!accepts(proposed))return false;proposed.forEach(this::setOption);return true;}
-    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\\n').append("enabled=").append(isEnabled()).append('\\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\\n'));return b.toString();}
-    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
+    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\n').append("enabled=").append(isEnabled()).append('\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\n'));return b.toString();}
+    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
 }
 
 final class ComboTrackerSystem extends FeatureModule {
@@ -1174,8 +1174,8 @@ final class ComboTrackerSystem extends FeatureModule {
     synchronized String diagnostics(){return id()+"[enabled="+isEnabled()+", active="+enabledOptionCount()+"/"+optionCount()+", revision="+revision()+"]";}
     synchronized boolean accepts(Map<String,Boolean> proposed){if(proposed==null||proposed.size()>DEFAULTS.length)return false;for(var e:proposed.entrySet())if(e.getKey()==null||e.getValue()==null||!hasOption(e.getKey()))return false;return true;}
     synchronized boolean apply(Map<String,Boolean> proposed){if(!accepts(proposed))return false;proposed.forEach(this::setOption);return true;}
-    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\\n').append("enabled=").append(isEnabled()).append('\\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\\n'));return b.toString();}
-    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
+    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\n').append("enabled=").append(isEnabled()).append('\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\n'));return b.toString();}
+    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
 }
 
 final class CooldownSystem extends FeatureModule {
@@ -1275,8 +1275,8 @@ final class CooldownSystem extends FeatureModule {
     synchronized String diagnostics(){return id()+"[enabled="+isEnabled()+", active="+enabledOptionCount()+"/"+optionCount()+", revision="+revision()+"]";}
     synchronized boolean accepts(Map<String,Boolean> proposed){if(proposed==null||proposed.size()>DEFAULTS.length)return false;for(var e:proposed.entrySet())if(e.getKey()==null||e.getValue()==null||!hasOption(e.getKey()))return false;return true;}
     synchronized boolean apply(Map<String,Boolean> proposed){if(!accepts(proposed))return false;proposed.forEach(this::setOption);return true;}
-    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\\n').append("enabled=").append(isEnabled()).append('\\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\\n'));return b.toString();}
-    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
+    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\n').append("enabled=").append(isEnabled()).append('\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\n'));return b.toString();}
+    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
 }
 
 final class EffectsSystem extends FeatureModule {
@@ -1371,8 +1371,8 @@ final class EffectsSystem extends FeatureModule {
     synchronized String diagnostics(){return id()+"[enabled="+isEnabled()+", active="+enabledOptionCount()+"/"+optionCount()+", revision="+revision()+"]";}
     synchronized boolean accepts(Map<String,Boolean> proposed){if(proposed==null||proposed.size()>DEFAULTS.length)return false;for(var e:proposed.entrySet())if(e.getKey()==null||e.getValue()==null||!hasOption(e.getKey()))return false;return true;}
     synchronized boolean apply(Map<String,Boolean> proposed){if(!accepts(proposed))return false;proposed.forEach(this::setOption);return true;}
-    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\\n').append("enabled=").append(isEnabled()).append('\\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\\n'));return b.toString();}
-    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
+    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\n').append("enabled=").append(isEnabled()).append('\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\n'));return b.toString();}
+    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
 }
 
 final class SettingsSystem extends FeatureModule {
@@ -1472,8 +1472,8 @@ final class SettingsSystem extends FeatureModule {
     synchronized String diagnostics(){return id()+"[enabled="+isEnabled()+", active="+enabledOptionCount()+"/"+optionCount()+", revision="+revision()+"]";}
     synchronized boolean accepts(Map<String,Boolean> proposed){if(proposed==null||proposed.size()>DEFAULTS.length)return false;for(var e:proposed.entrySet())if(e.getKey()==null||e.getValue()==null||!hasOption(e.getKey()))return false;return true;}
     synchronized boolean apply(Map<String,Boolean> proposed){if(!accepts(proposed))return false;proposed.forEach(this::setOption);return true;}
-    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\\n').append("enabled=").append(isEnabled()).append('\\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\\n'));return b.toString();}
-    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
+    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\n').append("enabled=").append(isEnabled()).append('\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\n'));return b.toString();}
+    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
 }
 
 final class HudLayoutSystem extends FeatureModule {
@@ -1568,8 +1568,8 @@ final class HudLayoutSystem extends FeatureModule {
     synchronized String diagnostics(){return id()+"[enabled="+isEnabled()+", active="+enabledOptionCount()+"/"+optionCount()+", revision="+revision()+"]";}
     synchronized boolean accepts(Map<String,Boolean> proposed){if(proposed==null||proposed.size()>DEFAULTS.length)return false;for(var e:proposed.entrySet())if(e.getKey()==null||e.getValue()==null||!hasOption(e.getKey()))return false;return true;}
     synchronized boolean apply(Map<String,Boolean> proposed){if(!accepts(proposed))return false;proposed.forEach(this::setOption);return true;}
-    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\\n').append("enabled=").append(isEnabled()).append('\\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\\n'));return b.toString();}
-    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
+    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\n').append("enabled=").append(isEnabled()).append('\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\n'));return b.toString();}
+    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
 }
 
 final class SoundCueSystem extends FeatureModule {
@@ -1669,8 +1669,8 @@ final class SoundCueSystem extends FeatureModule {
     synchronized String diagnostics(){return id()+"[enabled="+isEnabled()+", active="+enabledOptionCount()+"/"+optionCount()+", revision="+revision()+"]";}
     synchronized boolean accepts(Map<String,Boolean> proposed){if(proposed==null||proposed.size()>DEFAULTS.length)return false;for(var e:proposed.entrySet())if(e.getKey()==null||e.getValue()==null||!hasOption(e.getKey()))return false;return true;}
     synchronized boolean apply(Map<String,Boolean> proposed){if(!accepts(proposed))return false;proposed.forEach(this::setOption);return true;}
-    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\\n').append("enabled=").append(isEnabled()).append('\\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\\n'));return b.toString();}
-    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
+    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\n').append("enabled=").append(isEnabled()).append('\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\n'));return b.toString();}
+    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
 }
 
 final class PerformanceSystem extends FeatureModule {
@@ -1765,8 +1765,8 @@ final class PerformanceSystem extends FeatureModule {
     synchronized String diagnostics(){return id()+"[enabled="+isEnabled()+", active="+enabledOptionCount()+"/"+optionCount()+", revision="+revision()+"]";}
     synchronized boolean accepts(Map<String,Boolean> proposed){if(proposed==null||proposed.size()>DEFAULTS.length)return false;for(var e:proposed.entrySet())if(e.getKey()==null||e.getValue()==null||!hasOption(e.getKey()))return false;return true;}
     synchronized boolean apply(Map<String,Boolean> proposed){if(!accepts(proposed))return false;proposed.forEach(this::setOption);return true;}
-    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\\n').append("enabled=").append(isEnabled()).append('\\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\\n'));return b.toString();}
-    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
+    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\n').append("enabled=").append(isEnabled()).append('\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\n'));return b.toString();}
+    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
 }
 
 final class CombatLogSystem extends FeatureModule {
@@ -1861,8 +1861,8 @@ final class CombatLogSystem extends FeatureModule {
     synchronized String diagnostics(){return id()+"[enabled="+isEnabled()+", active="+enabledOptionCount()+"/"+optionCount()+", revision="+revision()+"]";}
     synchronized boolean accepts(Map<String,Boolean> proposed){if(proposed==null||proposed.size()>DEFAULTS.length)return false;for(var e:proposed.entrySet())if(e.getKey()==null||e.getValue()==null||!hasOption(e.getKey()))return false;return true;}
     synchronized boolean apply(Map<String,Boolean> proposed){if(!accepts(proposed))return false;proposed.forEach(this::setOption);return true;}
-    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\\n').append("enabled=").append(isEnabled()).append('\\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\\n'));return b.toString();}
-    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
+    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\n').append("enabled=").append(isEnabled()).append('\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\n'));return b.toString();}
+    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
 }
 
 final class ProfileSystem extends FeatureModule {
@@ -1962,8 +1962,8 @@ final class ProfileSystem extends FeatureModule {
     synchronized String diagnostics(){return id()+"[enabled="+isEnabled()+", active="+enabledOptionCount()+"/"+optionCount()+", revision="+revision()+"]";}
     synchronized boolean accepts(Map<String,Boolean> proposed){if(proposed==null||proposed.size()>DEFAULTS.length)return false;for(var e:proposed.entrySet())if(e.getKey()==null||e.getValue()==null||!hasOption(e.getKey()))return false;return true;}
     synchronized boolean apply(Map<String,Boolean> proposed){if(!accepts(proposed))return false;proposed.forEach(this::setOption);return true;}
-    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\\n').append("enabled=").append(isEnabled()).append('\\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\\n'));return b.toString();}
-    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
+    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\n').append("enabled=").append(isEnabled()).append('\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\n'));return b.toString();}
+    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
 }
 
 final class WeaponDurabilitySystem extends FeatureModule {
@@ -2063,8 +2063,8 @@ final class WeaponDurabilitySystem extends FeatureModule {
     synchronized String diagnostics(){return id()+"[enabled="+isEnabled()+", active="+enabledOptionCount()+"/"+optionCount()+", revision="+revision()+"]";}
     synchronized boolean accepts(Map<String,Boolean> proposed){if(proposed==null||proposed.size()>DEFAULTS.length)return false;for(var e:proposed.entrySet())if(e.getKey()==null||e.getValue()==null||!hasOption(e.getKey()))return false;return true;}
     synchronized boolean apply(Map<String,Boolean> proposed){if(!accepts(proposed))return false;proposed.forEach(this::setOption);return true;}
-    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\\n').append("enabled=").append(isEnabled()).append('\\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\\n'));return b.toString();}
-    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
+    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\n').append("enabled=").append(isEnabled()).append('\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\n'));return b.toString();}
+    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
 }
 
 final class ProjectileAssistantSystem extends FeatureModule {
@@ -2159,8 +2159,8 @@ final class ProjectileAssistantSystem extends FeatureModule {
     synchronized String diagnostics(){return id()+"[enabled="+isEnabled()+", active="+enabledOptionCount()+"/"+optionCount()+", revision="+revision()+"]";}
     synchronized boolean accepts(Map<String,Boolean> proposed){if(proposed==null||proposed.size()>DEFAULTS.length)return false;for(var e:proposed.entrySet())if(e.getKey()==null||e.getValue()==null||!hasOption(e.getKey()))return false;return true;}
     synchronized boolean apply(Map<String,Boolean> proposed){if(!accepts(proposed))return false;proposed.forEach(this::setOption);return true;}
-    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\\n').append("enabled=").append(isEnabled()).append('\\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\\n'));return b.toString();}
-    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
+    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\n').append("enabled=").append(isEnabled()).append('\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\n'));return b.toString();}
+    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
 }
 
 final class MovementAssistantSystem extends FeatureModule {
@@ -2255,8 +2255,8 @@ final class MovementAssistantSystem extends FeatureModule {
     synchronized String diagnostics(){return id()+"[enabled="+isEnabled()+", active="+enabledOptionCount()+"/"+optionCount()+", revision="+revision()+"]";}
     synchronized boolean accepts(Map<String,Boolean> proposed){if(proposed==null||proposed.size()>DEFAULTS.length)return false;for(var e:proposed.entrySet())if(e.getKey()==null||e.getValue()==null||!hasOption(e.getKey()))return false;return true;}
     synchronized boolean apply(Map<String,Boolean> proposed){if(!accepts(proposed))return false;proposed.forEach(this::setOption);return true;}
-    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\\n').append("enabled=").append(isEnabled()).append('\\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\\n'));return b.toString();}
-    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
+    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\n').append("enabled=").append(isEnabled()).append('\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\n'));return b.toString();}
+    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
 }
 
 final class ResourceTrackerSystem extends FeatureModule {
@@ -2351,8 +2351,8 @@ final class ResourceTrackerSystem extends FeatureModule {
     synchronized String diagnostics(){return id()+"[enabled="+isEnabled()+", active="+enabledOptionCount()+"/"+optionCount()+", revision="+revision()+"]";}
     synchronized boolean accepts(Map<String,Boolean> proposed){if(proposed==null||proposed.size()>DEFAULTS.length)return false;for(var e:proposed.entrySet())if(e.getKey()==null||e.getValue()==null||!hasOption(e.getKey()))return false;return true;}
     synchronized boolean apply(Map<String,Boolean> proposed){if(!accepts(proposed))return false;proposed.forEach(this::setOption);return true;}
-    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\\n').append("enabled=").append(isEnabled()).append('\\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\\n'));return b.toString();}
-    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
+    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\n').append("enabled=").append(isEnabled()).append('\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\n'));return b.toString();}
+    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
 }
 
 final class FriendMarkerSystem extends FeatureModule {
@@ -2447,8 +2447,8 @@ final class FriendMarkerSystem extends FeatureModule {
     synchronized String diagnostics(){return id()+"[enabled="+isEnabled()+", active="+enabledOptionCount()+"/"+optionCount()+", revision="+revision()+"]";}
     synchronized boolean accepts(Map<String,Boolean> proposed){if(proposed==null||proposed.size()>DEFAULTS.length)return false;for(var e:proposed.entrySet())if(e.getKey()==null||e.getValue()==null||!hasOption(e.getKey()))return false;return true;}
     synchronized boolean apply(Map<String,Boolean> proposed){if(!accepts(proposed))return false;proposed.forEach(this::setOption);return true;}
-    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\\n').append("enabled=").append(isEnabled()).append('\\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\\n'));return b.toString();}
-    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
+    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\n').append("enabled=").append(isEnabled()).append('\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\n'));return b.toString();}
+    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
 }
 
 final class SessionStatsSystem extends FeatureModule {
@@ -2543,8 +2543,8 @@ final class SessionStatsSystem extends FeatureModule {
     synchronized String diagnostics(){return id()+"[enabled="+isEnabled()+", active="+enabledOptionCount()+"/"+optionCount()+", revision="+revision()+"]";}
     synchronized boolean accepts(Map<String,Boolean> proposed){if(proposed==null||proposed.size()>DEFAULTS.length)return false;for(var e:proposed.entrySet())if(e.getKey()==null||e.getValue()==null||!hasOption(e.getKey()))return false;return true;}
     synchronized boolean apply(Map<String,Boolean> proposed){if(!accepts(proposed))return false;proposed.forEach(this::setOption);return true;}
-    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\\n').append("enabled=").append(isEnabled()).append('\\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\\n'));return b.toString();}
-    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
+    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\n').append("enabled=").append(isEnabled()).append('\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\n'));return b.toString();}
+    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
 }
 
 final class AccessibilitySystem extends FeatureModule {
@@ -2639,8 +2639,8 @@ final class AccessibilitySystem extends FeatureModule {
     synchronized String diagnostics(){return id()+"[enabled="+isEnabled()+", active="+enabledOptionCount()+"/"+optionCount()+", revision="+revision()+"]";}
     synchronized boolean accepts(Map<String,Boolean> proposed){if(proposed==null||proposed.size()>DEFAULTS.length)return false;for(var e:proposed.entrySet())if(e.getKey()==null||e.getValue()==null||!hasOption(e.getKey()))return false;return true;}
     synchronized boolean apply(Map<String,Boolean> proposed){if(!accepts(proposed))return false;proposed.forEach(this::setOption);return true;}
-    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\\n').append("enabled=").append(isEnabled()).append('\\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\\n'));return b.toString();}
-    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
+    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\n').append("enabled=").append(isEnabled()).append('\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\n'));return b.toString();}
+    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
 }
 
 final class LayoutPresetSystem extends FeatureModule {
@@ -2740,8 +2740,8 @@ final class LayoutPresetSystem extends FeatureModule {
     synchronized String diagnostics(){return id()+"[enabled="+isEnabled()+", active="+enabledOptionCount()+"/"+optionCount()+", revision="+revision()+"]";}
     synchronized boolean accepts(Map<String,Boolean> proposed){if(proposed==null||proposed.size()>DEFAULTS.length)return false;for(var e:proposed.entrySet())if(e.getKey()==null||e.getValue()==null||!hasOption(e.getKey()))return false;return true;}
     synchronized boolean apply(Map<String,Boolean> proposed){if(!accepts(proposed))return false;proposed.forEach(this::setOption);return true;}
-    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\\n').append("enabled=").append(isEnabled()).append('\\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\\n'));return b.toString();}
-    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
+    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\n').append("enabled=").append(isEnabled()).append('\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\n'));return b.toString();}
+    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
 }
 
 final class WarningSystem extends FeatureModule {
@@ -2836,8 +2836,8 @@ final class WarningSystem extends FeatureModule {
     synchronized String diagnostics(){return id()+"[enabled="+isEnabled()+", active="+enabledOptionCount()+"/"+optionCount()+", revision="+revision()+"]";}
     synchronized boolean accepts(Map<String,Boolean> proposed){if(proposed==null||proposed.size()>DEFAULTS.length)return false;for(var e:proposed.entrySet())if(e.getKey()==null||e.getValue()==null||!hasOption(e.getKey()))return false;return true;}
     synchronized boolean apply(Map<String,Boolean> proposed){if(!accepts(proposed))return false;proposed.forEach(this::setOption);return true;}
-    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\\n').append("enabled=").append(isEnabled()).append('\\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\\n'));return b.toString();}
-    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
+    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\n').append("enabled=").append(isEnabled()).append('\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\n'));return b.toString();}
+    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
 }
 
 final class TrainingSystem extends FeatureModule {
@@ -2932,8 +2932,8 @@ final class TrainingSystem extends FeatureModule {
     synchronized String diagnostics(){return id()+"[enabled="+isEnabled()+", active="+enabledOptionCount()+"/"+optionCount()+", revision="+revision()+"]";}
     synchronized boolean accepts(Map<String,Boolean> proposed){if(proposed==null||proposed.size()>DEFAULTS.length)return false;for(var e:proposed.entrySet())if(e.getKey()==null||e.getValue()==null||!hasOption(e.getKey()))return false;return true;}
     synchronized boolean apply(Map<String,Boolean> proposed){if(!accepts(proposed))return false;proposed.forEach(this::setOption);return true;}
-    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\\n').append("enabled=").append(isEnabled()).append('\\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\\n'));return b.toString();}
-    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
+    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\n').append("enabled=").append(isEnabled()).append('\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\n'));return b.toString();}
+    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
 }
 
 final class PrivacySystem extends FeatureModule {
@@ -3028,8 +3028,8 @@ final class PrivacySystem extends FeatureModule {
     synchronized String diagnostics(){return id()+"[enabled="+isEnabled()+", active="+enabledOptionCount()+"/"+optionCount()+", revision="+revision()+"]";}
     synchronized boolean accepts(Map<String,Boolean> proposed){if(proposed==null||proposed.size()>DEFAULTS.length)return false;for(var e:proposed.entrySet())if(e.getKey()==null||e.getValue()==null||!hasOption(e.getKey()))return false;return true;}
     synchronized boolean apply(Map<String,Boolean> proposed){if(!accepts(proposed))return false;proposed.forEach(this::setOption);return true;}
-    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\\n').append("enabled=").append(isEnabled()).append('\\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\\n'));return b.toString();}
-    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
+    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\n').append("enabled=").append(isEnabled()).append('\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\n'));return b.toString();}
+    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
 }
 
 final class NotificationSystem extends FeatureModule {
@@ -3124,8 +3124,8 @@ final class NotificationSystem extends FeatureModule {
     synchronized String diagnostics(){return id()+"[enabled="+isEnabled()+", active="+enabledOptionCount()+"/"+optionCount()+", revision="+revision()+"]";}
     synchronized boolean accepts(Map<String,Boolean> proposed){if(proposed==null||proposed.size()>DEFAULTS.length)return false;for(var e:proposed.entrySet())if(e.getKey()==null||e.getValue()==null||!hasOption(e.getKey()))return false;return true;}
     synchronized boolean apply(Map<String,Boolean> proposed){if(!accepts(proposed))return false;proposed.forEach(this::setOption);return true;}
-    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\\n').append("enabled=").append(isEnabled()).append('\\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\\n'));return b.toString();}
-    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
+    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\n').append("enabled=").append(isEnabled()).append('\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\n'));return b.toString();}
+    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
 }
 
 final class QuickActionSystem extends FeatureModule {
@@ -3220,7 +3220,7 @@ final class QuickActionSystem extends FeatureModule {
     synchronized String diagnostics(){return id()+"[enabled="+isEnabled()+", active="+enabledOptionCount()+"/"+optionCount()+", revision="+revision()+"]";}
     synchronized boolean accepts(Map<String,Boolean> proposed){if(proposed==null||proposed.size()>DEFAULTS.length)return false;for(var e:proposed.entrySet())if(e.getKey()==null||e.getValue()==null||!hasOption(e.getKey()))return false;return true;}
     synchronized boolean apply(Map<String,Boolean> proposed){if(!accepts(proposed))return false;proposed.forEach(this::setOption);return true;}
-    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\\n').append("enabled=").append(isEnabled()).append('\\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\\n'));return b.toString();}
-    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
+    synchronized String exportText(){StringBuilder b=new StringBuilder(id()).append('\n').append("enabled=").append(isEnabled()).append('\n');options().forEach((k,v)->b.append(k).append('=').append(v).append('\n'));return b.toString();}
+    synchronized int importText(String input){if(input==null||input.length()>16384)return 0;int n=0;for(String line:input.split("\\R")){int p=line.indexOf('=');if(p<=0)continue;String k=line.substring(0,p).trim(),v=line.substring(p+1).trim();if("enabled".equals(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setEnabled(Boolean.parseBoolean(v));n++;}else if(hasOption(k)&&(v.equalsIgnoreCase("true")||v.equalsIgnoreCase("false"))){setOption(k,Boolean.parseBoolean(v));n++;}}return n;}
 }
 
