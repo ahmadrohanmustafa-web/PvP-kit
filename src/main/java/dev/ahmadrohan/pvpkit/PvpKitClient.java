@@ -74,6 +74,12 @@ public final class PvpKitClient implements ClientModInitializer {
         registry = new FeatureRegistry();
         registry.initializeDefaults();
 
+        // Replace the vanilla reticle while our precision reticle is enabled, so two crosshairs
+        // never overlap. Restore the vanilla one when the user disables the custom crosshair.
+        HudElementRegistry.replaceElement(VanillaHudElements.CROSSHAIR, original -> (graphics, tracker) -> {
+            if (!customCrosshair) original.render(graphics, tracker);
+        });
+
         HudElementRegistry.attachElementBefore(
             VanillaHudElements.CHAT,
             Identifier.fromNamespaceAndPath(MOD_ID, "combat_hud"),
