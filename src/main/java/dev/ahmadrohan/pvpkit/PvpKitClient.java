@@ -231,7 +231,7 @@ public final class PvpKitClient implements ClientModInitializer {
             int slotY = armorTop + i * (armorSlotSize + armorGap);
             graphics.fill(armorX, slotY, armorX + armorSlotSize, slotY + armorSlotSize, 0xB010151D);
             graphics.fill(armorX, slotY, armorX + armorSlotSize, slotY + 1, 0x805B6A7D);
-            ItemStack armorStack = player.getInventory().getArmor(armorIndices[i]);
+            ItemStack armorStack = player.getInventory().armor.get(armorIndices[i]);
             if (!armorStack.isEmpty()) {
                 graphics.item(armorStack, armorX, slotY);
                 if (armorStack.isDamageableItem() && armorStack.getMaxDamage() > 0) {
