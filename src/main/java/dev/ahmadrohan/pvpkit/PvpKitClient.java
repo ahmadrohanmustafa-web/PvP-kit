@@ -15,6 +15,10 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.ProjectileUtil;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.util.Mth;
@@ -152,10 +156,22 @@ public final class PvpKitClient implements ClientModInitializer {
         int cx = width / 2;
         int cy = height / 2;
 
-        // Reach feedback is informational only: it does not change vanilla/server attack reach.
-        boolean targetingLiving = client.crosshairPickEntity instanceof LivingEntity target && target.isAlive();
-        LivingEntity aimedTarget = targetingLiving ? (LivingEntity) client.crosshairPickEntity : null;
-        boolean targetInReach = aimedTarget != null && player.distanceToSqr(aimedTarget) <= 16.0D;
+        // Probe up to four blocks along the view ray so the indicator can also show red
+        // when a living target is visible but still outside the configured threshold.
+        // This is visual-only and does not alter Minecraft's attack reach or server rules.
+        float partialTick = tickCounter.getGameTimeDeltaPartialTick(false);
+        Vec3 eye = player.getEyePosition(partialTick);
+        Vec3 view = player.getViewVector(partialTick);
+        Vec3 rayEnd = eye.add(view.scale(4.0D));
+        AABB searchBox = player.getBoundingBox().expandTowards(view.scale(4.0D)).inflate(1.0D);
+        EntityHitResult reachHit = ProjectileUtil.getEntityHitResult(
+            player, eye, rayEnd, searchBox,
+            entity -> entity instanceof LivingEntity && entity.isAlive() && entity != player,
+            16.0D
+        );
+        LivingEntity aimedTarget = reachHit != null && reachHit.getEntity() instanceof LivingEntity living ? living : null;
+        boolean targetingLiving = aimedTarget != null;
+        boolean targetInReach = aimedTarget != null && eye.distanceToSqr(reachHit.getLocation()) <= 16.0D;
 
         // Tiny precision reticle; target feedback uses the actual entity under Minecraft's crosshair.
         if (customCrosshair) {
