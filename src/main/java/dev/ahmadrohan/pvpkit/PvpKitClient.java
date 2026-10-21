@@ -271,6 +271,21 @@ public final class PvpKitClient implements ClientModInitializer {
                 .map(id -> id.withPrefix("mob_effect/"))
                 .orElse(Identifier.fromNamespaceAndPath("minecraft", "missing"));
             graphics.blitSprite(RenderPipelines.GUI_TEXTURED, effectSprite, effectX, effectY, 18, 18);
+
+            // Show the remaining potion duration beside its icon, formatted as minutes:seconds.
+            // Negative durations are used for infinite effects.
+            int durationTicks = effect.getDuration();
+            String durationText;
+            if (durationTicks < 0) {
+                durationText = "∞";
+            } else {
+                int totalSeconds = durationTicks / 20;
+                int minutes = totalSeconds / 60;
+                int seconds = totalSeconds % 60;
+                durationText = String.format(java.util.Locale.ROOT, "%d:%02d", minutes, seconds);
+            }
+            int durationWidth = client.font.width(durationText);
+            graphics.text(client.font, durationText, effectX - durationWidth - 4, effectY + 5, 0xFFEAF2FF, true);
             effectIndex++;
         }
 
