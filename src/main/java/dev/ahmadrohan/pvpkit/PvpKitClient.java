@@ -254,6 +254,7 @@ public final class PvpKitClient implements ClientModInitializer {
         int statsY = armorTop + 1;
         int statsGap = 17;
         int food = player.getFoodData().getFoodLevel();
+        int totems = player.getInventory().countItem(Items.TOTEM_OF_UNDYING);
         int health = Mth.ceil(player.getHealth());
         ItemStack mainHand = player.getMainHandItem();
         String weaponText = "⚔ ∞";
@@ -280,7 +281,7 @@ public final class PvpKitClient implements ClientModInitializer {
         }
         if (!lowFxMode && now - slotChangeAt < 120L) {
             int alpha = (int)(0x80 * (1.0F - (now - slotChangeAt) / 120.0F));
-            graphics.fill(cx - 10, stripY - 5, cx + 10, stripY - 4, (alpha << 24) | 0x65FF91);
+            graphics.fill(cx - 10, height - 61, cx + 10, height - 60, (alpha << 24) | 0x65FF91);
         }
 
         if (now < statusMessageUntil && statusMessage != null && !statusMessage.isBlank()) {
