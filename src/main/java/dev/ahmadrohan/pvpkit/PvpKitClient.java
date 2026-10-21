@@ -22,8 +22,6 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.core.component.DataComponents;
-import net.minecraft.world.food.FoodProperties;
 import net.minecraft.util.Mth;
 import net.minecraft.util.Util;
 import org.slf4j.Logger;
@@ -251,67 +249,6 @@ public final class PvpKitClient implements ClientModInitializer {
             }
         }
 
-
-        // Advanced food preview: preserve the vanilla hunger bar and outline only the hunger
-        // drumsticks this selected food could restore. Gold means preview, not actual healing.
-        int currentFood = player.getFoodData().getFoodLevel();
-        float currentSaturation = player.getFoodData().getSaturationLevel();
-        ItemStack heldFoodStack = player.getMainHandItem();
-        FoodProperties heldFood = heldFoodStack.get(DataComponents.FOOD);
-        if (heldFood != null) {
-            int nutrition = Math.max(0, heldFood.nutrition());
-            int recoverableFood = Math.min(nutrition, Math.max(0, 20 - currentFood));
-            boolean canEatNow = currentFood < 20 || heldFood.canAlwaysEat();
-            int previewPoints = canEatNow ? recoverableFood : 0;
-            int previewDrumsticks = (previewPoints + 1) / 2;
-            int foodBarRight = cx + 91;
-            int foodBarY = height - 39;
-
-            // Vanilla food icons are arranged right-to-left. Draw a fine gold outline around
-            // the icons which would gain hunger; do not replace or hide the vanilla icons.
-            for (int i = 0; i < Math.min(10, previewDrumsticks); i++) {
-                int iconX = foodBarRight - i * 8;
-                graphics.fill(iconX - 1, foodBarY - 1, iconX + 10, foodBarY, 0xFFFFD166);
-                graphics.fill(iconX - 1, foodBarY + 10, iconX + 10, foodBarY + 11, 0xFFFFD166);
-                graphics.fill(iconX - 1, foodBarY, iconX, foodBarY + 10, 0xFFFFD166);
-                graphics.fill(iconX + 9, foodBarY, iconX + 10, foodBarY + 10, 0xFFFFD166);
-            }
-
-            String foodName = heldFoodStack.getHoverName().getString();
-            if (foodName.length() > 18) foodName = foodName.substring(0, 18) + "…";
-            float saturationGain = Math.min(
-                Math.max(0.0F, nutrition * heldFood.saturation() * 2.0F),
-                Math.max(0.0F, Math.min(20.0F, currentFood + recoverableFood) - currentSaturation)
-            );
-            String previewLine = canEatNow
-                ? "🍗 +" + recoverableFood + " hunger  |  Sat +" + String.format(java.util.Locale.ROOT, "%.1f", saturationGain)
-                : "HUNGER FULL";
-            int foodPanelY = height - 88;
-            graphics.text(client.font, foodName, cx - client.font.width(foodName) / 2, foodPanelY, 0xFFFFD166, true);
-            graphics.text(client.font, previewLine, cx - client.font.width(previewLine) / 2, foodPanelY + 11,
-                canEatNow ? 0xFFEAF2FF : 0xFFFF7777, true);
-
-            String special = foodEffectHint(heldFoodStack);
-            if (!special.isEmpty()) {
-                graphics.text(client.font, special, cx - client.font.width(special) / 2, foodPanelY + 22, 0xFFB8C0CC, true);
-            }
-            if (currentFood <= 6) {
-                graphics.text(client.font, "WARNING: LOW HUNGER", cx - 66, foodPanelY - 12, 0xFFFF7777, true);
-            } else if (currentSaturation <= 1.0F) {
-                graphics.text(client.font, "LOW SATURATION", cx - 54, foodPanelY - 12, 0xFFFFD166, true);
-            }
-            if (!canEatNow) {
-                graphics.text(client.font, "Cannot eat until hunger drops", cx - 77, foodPanelY + 33, 0xFFFF7777, true);
-            }
-        } else {
-            // Warn even when no food is selected, without adding permanent HUD clutter.
-            if (currentFood <= 6) {
-                graphics.text(client.font, "LOW HUNGER", cx - 34, height - 88, 0xFFFF7777, true);
-            } else if (currentSaturation <= 1.0F) {
-                graphics.text(client.font, "LOW SATURATION", cx - 54, height - 88, 0xFFFFD166, true);
-            }
-        }
-
         // Minimal right-side combat stats: symbols and values only, with no panel background.
         int statsX = Math.min(width - 42, cx + 101);
         int statsY = armorTop + 1;
@@ -351,20 +288,6 @@ public final class PvpKitClient implements ClientModInitializer {
             int messageWidth = client.font.width(statusMessage);
             graphics.text(client.font, statusMessage, (width - messageWidth) / 2, height - 74, 0xFFEAF2FF, true);
         }
-    }
-
-    private static String foodEffectHint(ItemStack stack) {
-        if (stack.is(Items.ENCHANTED_GOLDEN_APPLE)) return "Absorption + Resistance + Regeneration";
-        if (stack.is(Items.GOLDEN_APPLE)) return "Absorption + Regeneration";
-        if (stack.is(Items.CHORUS_FRUIT)) return "Teleport effect";
-        if (stack.is(Items.HONEY_BOTTLE)) return "Removes Poison";
-        if (stack.is(Items.SUSPICIOUS_STEW)) return "Special effect depends on recipe";
-        if (stack.is(Items.PUFFERFISH)) return "Warning: Poison + Hunger + Nausea";
-        if (stack.is(Items.SPIDER_EYE)) return "Warning: Poison";
-        if (stack.is(Items.ROTTEN_FLESH)) return "Warning: may cause Hunger";
-        if (stack.is(Items.POISONOUS_POTATO)) return "Warning: may cause Poison";
-        if (stack.is(Items.POISONOUS_POTATO)) return "Warning: may cause Poison";
-        return "";
     }
 
     private static void showStatus(String message) {
