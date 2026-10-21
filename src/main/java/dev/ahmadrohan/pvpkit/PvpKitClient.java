@@ -10,6 +10,7 @@ import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -226,7 +227,7 @@ public final class PvpKitClient implements ClientModInitializer {
                 .getKey(effect.getEffect().value());
             if (effectSprite != null) {
                 effectSprite = effectSprite.withPrefix("mob_effect/");
-                graphics.blitSprite(effectSprite, effectX, effectY, 18, 18);
+                graphics.blitSprite(RenderPipelines.GUI_TEXTURED, effectSprite, effectX, effectY, 18, 18);
             }
             int durationTicks = effect.getDuration();
             String durationText;
