@@ -4,7 +4,8 @@
   "package": "dev.ahmadrohan.pvpkit.mixin",
   "compatibilityLevel": "JAVA_25",
   "client": [
-    "InventoryScreenMixin"
+    "InventoryScreenMixin",
+    "CritParticleMixin"
   ],
   "injectors": {
     "defaultRequire": 1
