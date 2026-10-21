@@ -257,31 +257,36 @@ public final class PvpKitClient implements ClientModInitializer {
             }
         }
 
-        // Tiny item-status strip beside the hotbar. The old large text panel is removed.
-        // Icons/text stay compact so they do not compete with the crosshair or hotbar.
-        int stripX = Math.min(width - 62, cx + 101);
-        int stripY = height - 61;
+        // Ultra-compact item status: one short line instead of a tall panel.
+        // Keep the sword, totem, shield, and fire indicators out of the way of gameplay.
+        int stripX = Math.min(width - 54, cx + 101);
+        int stripY = height - 51;
         ItemStack mainHand = player.getMainHandItem();
         int totems = player.getInventory().countItem(Items.TOTEM_OF_UNDYING);
         boolean shield = hasShield(player);
         boolean burning = player.isOnFire();
-        String weaponText = "W ∞";
+        String weaponText = "S:∞";
         int weaponColor = 0xFFEAF2FF;
         if (!mainHand.isEmpty() && mainHand.isDamageableItem() && mainHand.getMaxDamage() > 0) {
             int durability = Mth.clamp(100 - (int)Math.round(100.0D * mainHand.getDamageValue() / mainHand.getMaxDamage()), 0, 100);
-            weaponText = "W " + durability + "%";
+            weaponText = "S:" + durability + "%";
             weaponColor = durability > 50 ? 0xFF65FF91 : durability > 20 ? 0xFFFFD166 : 0xFFFF5555;
         }
-        graphics.fill(stripX - 3, stripY - 2, Math.min(width - 2, stripX + 48), stripY + 29, 0x500D121A);
-        graphics.text(client.font, weaponText, stripX, stripY, weaponColor, true);
-        graphics.text(client.font, "T " + totems, stripX, stripY + 10, totems > 0 ? 0xFF65FF91 : 0xFFB8C0CC, true);
-        graphics.text(client.font, "SH " + (shield ? "ON" : "OFF"), stripX, stripY + 20, shield ? 0xFF65FF91 : 0xFFB8C0CC, true);
-        if (burning) {
-            graphics.text(client.font, "FIRE!", stripX + 27, stripY, 0xFFFF633D, true);
-        }
+        String totemText = "T:" + totems;
+        String shieldText = shield ? "SH+" : "SH-";
+        int statusWidth = client.font.width(weaponText) + client.font.width(totemText) + client.font.width(shieldText) + (burning ? client.font.width("F!") : 0) + 12;
+        graphics.fill(stripX - 2, stripY - 2, Math.min(width - 2, stripX + statusWidth), stripY + 11, 0x400D121A);
+        int textX = stripX;
+        graphics.text(client.font, weaponText, textX, stripY, weaponColor, true);
+        textX += client.font.width(weaponText) + 3;
+        graphics.text(client.font, totemText, textX, stripY, totems > 0 ? 0xFF65FF91 : 0xFFB8C0CC, true);
+        textX += client.font.width(totemText) + 3;
+        graphics.text(client.font, shieldText, textX, stripY, shield ? 0xFF65FF91 : 0xFFB8C0CC, true);
+        textX += client.font.width(shieldText) + 3;
+        if (burning) graphics.text(client.font, "F!", textX, stripY, 0xFFFF633D, true);
 
-        // Potion/status effects appear in a slim list to the right of the item strip.
-        int effectY = stripY + 34;
+        // Potion/status effects appear in a slim list just below the compact status line.
+        int effectY = stripY + 14;
         int effectCount = 0;
         for (var effect : player.getActiveEffects()) {
             if (effectCount >= 5) break;
