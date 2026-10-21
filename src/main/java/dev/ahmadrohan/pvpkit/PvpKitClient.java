@@ -11,6 +11,7 @@ import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
@@ -21,7 +22,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.util.Mth;
 import net.minecraft.util.Util;
@@ -257,46 +258,20 @@ public final class PvpKitClient implements ClientModInitializer {
             }
         }
 
-        // Ultra-compact item status: one short line instead of a tall panel.
-        // Keep the sword, totem, shield, and fire indicators out of the way of gameplay.
-        int stripX = Math.min(width - 54, cx + 101);
-        int stripY = height - 51;
-        ItemStack mainHand = player.getMainHandItem();
-        int totems = player.getInventory().countItem(Items.TOTEM_OF_UNDYING);
-        boolean shield = hasShield(player);
-        boolean burning = player.isOnFire();
-        String weaponText = "S:∞";
-        int weaponColor = 0xFFEAF2FF;
-        if (!mainHand.isEmpty() && mainHand.isDamageableItem() && mainHand.getMaxDamage() > 0) {
-            int durability = Mth.clamp(100 - (int)Math.round(100.0D * mainHand.getDamageValue() / mainHand.getMaxDamage()), 0, 100);
-            weaponText = "S:" + durability + "%";
-            weaponColor = durability > 50 ? 0xFF65FF91 : durability > 20 ? 0xFFFFD166 : 0xFFFF5555;
-        }
-        String totemText = "T:" + totems;
-        String shieldText = shield ? "SH+" : "SH-";
-        int statusWidth = client.font.width(weaponText) + client.font.width(totemText) + client.font.width(shieldText) + (burning ? client.font.width("F!") : 0) + 12;
-        graphics.fill(stripX - 2, stripY - 2, Math.min(width - 2, stripX + statusWidth), stripY + 11, 0x400D121A);
-        int textX = stripX;
-        graphics.text(client.font, weaponText, textX, stripY, weaponColor, true);
-        textX += client.font.width(weaponText) + 3;
-        graphics.text(client.font, totemText, textX, stripY, totems > 0 ? 0xFF65FF91 : 0xFFB8C0CC, true);
-        textX += client.font.width(totemText) + 3;
-        graphics.text(client.font, shieldText, textX, stripY, shield ? 0xFF65FF91 : 0xFFB8C0CC, true);
-        textX += client.font.width(shieldText) + 3;
-        if (burning) graphics.text(client.font, "F!", textX, stripY, 0xFFFF633D, true);
-
-        // Potion/status effects appear in a slim list just below the compact status line.
-        int effectY = stripY + 14;
-        int effectCount = 0;
+        // Vanilla-style potion-effect icons only: no sword/totem/shield/fire text or side panel.
+        // Every active effect with an icon is rendered; there is no artificial five-effect cap.
+        // Stack upward from the hotbar's right edge so additional effects use the available screen height.
+        int effectIndex = 0;
+        int effectX = Math.min(width - 22, cx + 94);
         for (var effect : player.getActiveEffects()) {
-            if (effectCount >= 5) break;
-            String effectName = effect.getEffect().value().getDisplayName().getString();
-            if (effectName.length() > 9) effectName = effectName.substring(0, 9);
-            int seconds = Math.max(0, effect.getDuration() / 20);
-            String duration = seconds >= 60 ? (seconds / 60) + "m" : seconds + "s";
-            int effectColor = effect.getAmplifier() > 0 ? 0xFFFFD166 : 0xFFB8E7FF;
-            graphics.text(client.font, effectName + " " + duration, stripX, effectY + effectCount * 9, effectColor, true);
-            effectCount++;
+            if (!effect.showIcon()) continue;
+            int effectY = height - 54 - (effectIndex * 22);
+            var effectSprite = effect.getEffect().unwrapKey()
+                .map(ResourceKey::identifier)
+                .map(id -> id.withPrefix("mob_effect/"))
+                .orElse(Identifier.fromNamespaceAndPath("minecraft", "missing"));
+            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, effectSprite, effectX, effectY, 18, 18);
+            effectIndex++;
         }
 
         // Brief red hit-confirm animation centered below the crosshair.
@@ -373,10 +348,6 @@ public final class PvpKitClient implements ClientModInitializer {
     private static void showStatus(String message) {
         statusMessage = message;
         statusMessageUntil = Util.getMillis() + 2200L;
-    }
-
-    private static boolean hasShield(Player player) {
-        return player.getMainHandItem().is(Items.SHIELD) || player.getOffhandItem().is(Items.SHIELD);
     }
 
     private static String selectedItemName(Player player) {
