@@ -23,7 +23,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.core.particles.DustParticleOptions;
-import org.joml.Vector3f;
 import net.minecraft.util.Mth;
 import net.minecraft.util.Util;
 import org.slf4j.Logger;
@@ -346,7 +345,7 @@ public final class PvpKitClient implements ClientModInitializer {
     private static void spawnRedCritParticles(Minecraft client, LivingEntity target) {
         if (client.level == null) return;
         int count = lowFxMode ? 5 : 10;
-        DustParticleOptions redDust = new DustParticleOptions(new Vector3f(1.0F, 0.025F, 0.025F), 0.9F);
+        DustParticleOptions redDust = new DustParticleOptions(0xFFFF0606, 0.9F);
         for (int i = 0; i < count; i++) {
             double x = target.getX() + (Math.random() - 0.5D) * target.getBbWidth();
             double y = target.getY() + target.getBbHeight() * (0.35D + Math.random() * 0.55D);
