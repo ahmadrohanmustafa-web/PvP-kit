@@ -11,7 +11,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -53,7 +53,7 @@ public final class PvpKitClient implements ClientModInitializer {
     private static int observedTargetHurtTime;
 
     private static final KeyMapping.Category CATEGORY = KeyMapping.Category.register(
-        ResourceLocation.fromNamespaceAndPath(MOD_ID, "controls")
+        Identifier.fromNamespaceAndPath(MOD_ID, "controls")
     );
     private static final KeyMapping MENU_KEY = register("key.pvpkit.menu", GLFW.GLFW_KEY_H);
     private static final KeyMapping NEXT_LOADOUT_KEY = register("key.pvpkit.next_loadout", GLFW.GLFW_KEY_N);
@@ -222,7 +222,7 @@ public final class PvpKitClient implements ClientModInitializer {
         for (MobEffectInstance effect : player.getActiveEffects()) {
             if (!effect.showIcon()) continue;
             int effectY = height - 54 - effectIndex * 22;
-            ResourceLocation effectSprite = net.minecraft.core.registries.BuiltInRegistries.MOB_EFFECT
+            Identifier effectSprite = net.minecraft.core.registries.BuiltInRegistries.MOB_EFFECT
                 .getKey(effect.getEffect().value());
             if (effectSprite != null) {
                 effectSprite = effectSprite.withPrefix("mob_effect/");
