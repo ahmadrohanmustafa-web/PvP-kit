@@ -1,0 +1,12 @@
+{
+  "key.category.pvpkit.controls": "PvP-kit",
+  "key.pvpkit.menu": "Open / close PvP-kit panel",
+  "key.pvpkit.next_loadout": "Switch PvP loadout",
+  "key.pvpkit.toggle_hud": "Toggle PvP HUD",
+  "key.pvpkit.toggle_crosshair": "Toggle custom PvP crosshair",
+  "pvpkit.title": "PvP-kit",
+  "pvpkit.status.ready": "PvP-kit HUD and controls initialized",
+  "pvpkit.status.client_only": "Client-side companion; server rules are unchanged",
+  "key.pvpkit.toggle_brightness": "Toggle brightness boost",
+  "key.pvpkit.performance_mode": "Toggle low-FX mode"
+}
