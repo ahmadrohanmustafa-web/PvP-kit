@@ -313,6 +313,8 @@ public final class PvpKitClient implements ClientModInitializer {
         statusMessageUntil = Util.getMillis() + 2200L;
     }
 
+    public static boolean isCustomCrosshairEnabled() { return customCrosshair; }
+
     public static FeatureRegistry registry() {
         if (registry == null) throw new IllegalStateException("PvP-kit has not initialized yet");
         return registry;
