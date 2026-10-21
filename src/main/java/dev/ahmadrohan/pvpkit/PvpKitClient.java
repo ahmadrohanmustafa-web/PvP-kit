@@ -22,6 +22,8 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.core.particles.DustParticleOptions;
+import org.joml.Vector3f;
 import net.minecraft.util.Mth;
 import net.minecraft.util.Util;
 import org.slf4j.Logger;
@@ -51,6 +53,10 @@ public final class PvpKitClient implements ClientModInitializer {
     private static int lastSelectedSlot = -1;
     private static String statusMessage = "PvP-kit ready";
     private static long statusMessageUntil = 0L;
+    private static LivingEntity observedTarget = null;
+    private static int observedTargetHurtTime = 0;
+    private static long hitEffectUntil = 0L;
+    private static long lastRedCritBurstAt = 0L;
 
     private static final KeyMapping.Category CATEGORY = KeyMapping.Category.register(
         Identifier.fromNamespaceAndPath(MOD_ID, "controls")
@@ -138,8 +144,11 @@ public final class PvpKitClient implements ClientModInitializer {
                     lastHitFeedbackAt = Util.getMillis();
                 }
                 lastSelectedSlot = slot;
+                updateHitEffects(client);
             } else {
                 lastSelectedSlot = -1;
+                observedTarget = null;
+                observedTargetHurtTime = 0;
             }
         });
 
@@ -249,10 +258,11 @@ public final class PvpKitClient implements ClientModInitializer {
             }
         }
 
-        // Minimal right-side combat stats: symbols and values only, with no panel background.
-        int statsX = Math.min(width - 42, cx + 101);
+        // Compact animated combat panel. A very subtle opacity pulse keeps the HUD lively
+        // without adding entities, textures, or continuous particle effects.
+        int statsX = Math.min(width - 54, cx + 101);
         int statsY = armorTop + 1;
-        int statsGap = 17;
+        int statsGap = 13;
         int food = player.getFoodData().getFoodLevel();
         int totems = player.getInventory().countItem(Items.TOTEM_OF_UNDYING);
         int health = Mth.ceil(player.getHealth());
@@ -264,10 +274,29 @@ public final class PvpKitClient implements ClientModInitializer {
             weaponText = "⚔ " + mainDurability + "%";
             weaponColor = mainDurability > 50 ? 0xFF65FF91 : mainDurability > 20 ? 0xFFFFD166 : 0xFFFF5555;
         }
-        String[] statLines = {"♥ " + health, "● " + food, "✦ " + totems, weaponText};
-        int[] statColors = {health <= 4 ? 0xFFFF5555 : 0xFFFF7777, food <= 6 ? 0xFFFFD166 : 0xFFEAF2FF, totems > 0 ? 0xFF65FF91 : 0xFFB8C0CC, weaponColor};
+        String shieldText = hasShield(player) ? "SH ON" : "SH OFF";
+        int shieldColor = hasShield(player) ? 0xFF65FF91 : 0xFFB8C0CC;
+        String[] statLines = {"HP " + health, "FOOD " + food, "TOT " + totems, shieldText, weaponText.replace("⚔ ", "W ")};
+        int[] statColors = {health <= 4 ? 0xFFFF5555 : 0xFFFF7777, food <= 6 ? 0xFFFFD166 : 0xFFEAF2FF, totems > 0 ? 0xFF65FF91 : 0xFFB8C0CC, shieldColor, weaponColor};
+        int panelPulse = 0x42 + (int)(10.0D * (0.5D + 0.5D * Math.sin(now / 240.0D)));
+        int panelHeight = statLines.length * statsGap + 3;
+        graphics.fill(statsX - 4, statsY - 3, Math.min(width - 3, statsX + 49), statsY + panelHeight, (panelPulse << 24) | 0x101722);
+        graphics.fill(statsX - 4, statsY - 3, Math.min(width - 3, statsX + 49), statsY - 2, 0x8065FF91);
         for (int i = 0; i < statLines.length; i++) {
-            graphics.text(client.font, statLines[i], statsX, statsY + i * statsGap, statColors[i], true);
+            int bob = lowFxMode ? 0 : (int)Math.round(Math.sin(now / 160.0D + i * 0.8D));
+            graphics.text(client.font, statLines[i], statsX + bob, statsY + i * statsGap, statColors[i], true);
+        }
+
+        // Brief red hit-confirm animation centered below the crosshair.
+        if (now < hitEffectUntil) {
+            int age = (int)(300L - (hitEffectUntil - now));
+            int spread = 3 + age / 35;
+            int alpha = Mth.clamp((int)(220.0D * (1.0D - age / 300.0D)), 0, 220);
+            int red = (alpha << 24) | 0x00FF3030;
+            graphics.fill(cx - spread - 3, cy + 11, cx - spread, cy + 12, red);
+            graphics.fill(cx + spread, cy + 11, cx + spread + 3, cy + 12, red);
+            graphics.fill(cx - spread - 3, cy + 15, cx - spread, cy + 16, red);
+            graphics.fill(cx + spread, cy + 15, cx + spread + 3, cy + 16, red);
         }
 
         if (player.getHealth() <= 4.0F) {
@@ -287,6 +316,45 @@ public final class PvpKitClient implements ClientModInitializer {
         if (now < statusMessageUntil && statusMessage != null && !statusMessage.isBlank()) {
             int messageWidth = client.font.width(statusMessage);
             graphics.text(client.font, statusMessage, (width - messageWidth) / 2, height - 74, 0xFFEAF2FF, true);
+        }
+    }
+
+    private static void updateHitEffects(Minecraft client) {
+        if (client.level == null || client.player == null) return;
+        if (!(client.hitResult instanceof EntityHitResult hit) || !(hit.getEntity() instanceof LivingEntity target)
+                || target == client.player || !target.isAlive()) {
+            observedTarget = null;
+            observedTargetHurtTime = 0;
+            return;
+        }
+        int hurtTime = target.hurtTime;
+        if (observedTarget != target) {
+            observedTarget = target;
+            observedTargetHurtTime = hurtTime;
+            return;
+        }
+        if (hurtTime > observedTargetHurtTime && hurtTime > 0 && Util.getMillis() - lastRedCritBurstAt > 90L) {
+            long now = Util.getMillis();
+            hitEffectUntil = now + 300L;
+            lastHitFeedbackAt = now;
+            lastRedCritBurstAt = now;
+            spawnRedCritParticles(client, target);
+        }
+        observedTargetHurtTime = hurtTime;
+    }
+
+    private static void spawnRedCritParticles(Minecraft client, LivingEntity target) {
+        if (client.level == null) return;
+        int count = lowFxMode ? 5 : 10;
+        DustParticleOptions redDust = new DustParticleOptions(new Vector3f(1.0F, 0.025F, 0.025F), 0.9F);
+        for (int i = 0; i < count; i++) {
+            double x = target.getX() + (Math.random() - 0.5D) * target.getBbWidth();
+            double y = target.getY() + target.getBbHeight() * (0.35D + Math.random() * 0.55D);
+            double z = target.getZ() + (Math.random() - 0.5D) * target.getBbWidth();
+            double vx = (Math.random() - 0.5D) * 0.045D;
+            double vy = 0.015D + Math.random() * 0.045D;
+            double vz = (Math.random() - 0.5D) * 0.045D;
+            client.level.addParticle(redDust, x, y, z, vx, vy, vz);
         }
     }
 
