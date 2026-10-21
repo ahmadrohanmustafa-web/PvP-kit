@@ -257,33 +257,41 @@ public final class PvpKitClient implements ClientModInitializer {
             }
         }
 
-        // Compact animated combat panel. A very subtle opacity pulse keeps the HUD lively
-        // without adding entities, textures, or continuous particle effects.
-        int statsX = Math.min(width - 54, cx + 101);
-        int statsY = armorTop + 1;
-        int statsGap = 13;
-        int food = player.getFoodData().getFoodLevel();
-        int totems = player.getInventory().countItem(Items.TOTEM_OF_UNDYING);
-        int health = Mth.ceil(player.getHealth());
+        // Tiny item-status strip beside the hotbar. The old large text panel is removed.
+        // Icons/text stay compact so they do not compete with the crosshair or hotbar.
+        int stripX = Math.min(width - 62, cx + 101);
+        int stripY = height - 61;
         ItemStack mainHand = player.getMainHandItem();
-        String weaponText = "⚔ ∞";
+        int totems = player.getInventory().countItem(Items.TOTEM_OF_UNDYING);
+        boolean shield = hasShield(player);
+        boolean burning = player.isOnFire();
+        String weaponText = "W ∞";
         int weaponColor = 0xFFEAF2FF;
         if (!mainHand.isEmpty() && mainHand.isDamageableItem() && mainHand.getMaxDamage() > 0) {
-            int mainDurability = Mth.clamp(100 - (int) Math.round(100.0D * mainHand.getDamageValue() / mainHand.getMaxDamage()), 0, 100);
-            weaponText = "⚔ " + mainDurability + "%";
-            weaponColor = mainDurability > 50 ? 0xFF65FF91 : mainDurability > 20 ? 0xFFFFD166 : 0xFFFF5555;
+            int durability = Mth.clamp(100 - (int)Math.round(100.0D * mainHand.getDamageValue() / mainHand.getMaxDamage()), 0, 100);
+            weaponText = "W " + durability + "%";
+            weaponColor = durability > 50 ? 0xFF65FF91 : durability > 20 ? 0xFFFFD166 : 0xFFFF5555;
         }
-        String shieldText = hasShield(player) ? "SH ON" : "SH OFF";
-        int shieldColor = hasShield(player) ? 0xFF65FF91 : 0xFFB8C0CC;
-        String[] statLines = {"HP " + health, "FOOD " + food, "TOT " + totems, shieldText, weaponText.replace("⚔ ", "W ")};
-        int[] statColors = {health <= 4 ? 0xFFFF5555 : 0xFFFF7777, food <= 6 ? 0xFFFFD166 : 0xFFEAF2FF, totems > 0 ? 0xFF65FF91 : 0xFFB8C0CC, shieldColor, weaponColor};
-        int panelPulse = 0x42 + (int)(10.0D * (0.5D + 0.5D * Math.sin(now / 240.0D)));
-        int panelHeight = statLines.length * statsGap + 3;
-        graphics.fill(statsX - 4, statsY - 3, Math.min(width - 3, statsX + 49), statsY + panelHeight, (panelPulse << 24) | 0x101722);
-        graphics.fill(statsX - 4, statsY - 3, Math.min(width - 3, statsX + 49), statsY - 2, 0x8065FF91);
-        for (int i = 0; i < statLines.length; i++) {
-            int bob = lowFxMode ? 0 : (int)Math.round(Math.sin(now / 160.0D + i * 0.8D));
-            graphics.text(client.font, statLines[i], statsX + bob, statsY + i * statsGap, statColors[i], true);
+        graphics.fill(stripX - 3, stripY - 2, Math.min(width - 2, stripX + 48), stripY + 29, 0x500D121A);
+        graphics.text(client.font, weaponText, stripX, stripY, weaponColor, true);
+        graphics.text(client.font, "T " + totems, stripX, stripY + 10, totems > 0 ? 0xFF65FF91 : 0xFFB8C0CC, true);
+        graphics.text(client.font, "SH " + (shield ? "ON" : "OFF"), stripX, stripY + 20, shield ? 0xFF65FF91 : 0xFFB8C0CC, true);
+        if (burning) {
+            graphics.text(client.font, "FIRE!", stripX + 27, stripY, 0xFFFF633D, true);
+        }
+
+        // Potion/status effects appear in a slim list to the right of the item strip.
+        int effectY = stripY + 34;
+        int effectCount = 0;
+        for (var effect : player.getActiveEffects()) {
+            if (effectCount >= 5) break;
+            String effectName = effect.getEffect().value().getDisplayName().getString();
+            if (effectName.length() > 9) effectName = effectName.substring(0, 9);
+            int seconds = Math.max(0, effect.getDuration() / 20);
+            String duration = seconds >= 60 ? (seconds / 60) + "m" : seconds + "s";
+            int effectColor = effect.getAmplifier() > 0 ? 0xFFFFD166 : 0xFFB8E7FF;
+            graphics.text(client.font, effectName + " " + duration, stripX, effectY + effectCount * 9, effectColor, true);
+            effectCount++;
         }
 
         // Brief red hit-confirm animation centered below the crosshair.
