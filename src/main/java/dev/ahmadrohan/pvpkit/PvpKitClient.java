@@ -208,24 +208,14 @@ public final class PvpKitClient implements ClientModInitializer {
 
         if (!hudVisible) return;
 
-        // A compact strip just above the vanilla hotbar; no large corner dashboard.
-        int stripY = height - 58;
-        String held = selectedItemName(player);
-        int totems = player.getInventory().countItem(Items.TOTEM_OF_UNDYING);
-        boolean shield = hasShield(player);
-        float cooldown = player.getAttackStrengthScale(0.0F);
-        String status = held + "   |   Totems " + totems + "   |   Shield " + (player.isBlocking() ? "BLOCKING" : shield ? "READY" : "—");
-        int textWidth = client.font.width(status);
-        int left = Math.max(4, (width - textWidth) / 2 - 7);
-        graphics.fill(left, stripY - 3, Math.min(width - 4, left + textWidth + 14), stripY + 11, 0x760B111A);
-        graphics.text(client.font, status, left + 7, stripY, shield ? 0xFFE9F6FF : 0xFFCCD5E0, true);
-
-        // Keep vanilla's attack indicator in its original position; do not draw a duplicate custom bar.
-
         // Four compact, dark armor slots stacked vertically just left of the vanilla hotbar.
         int armorSlotSize = 16;
         int armorGap = 2;
-        int armorX = Math.max(42, cx - 91 - armorSlotSize - 24);
+        ItemStack offhandStack = player.getOffhandItem();
+        // Keep the vanilla offhand slot clear: armor stays closer when the offhand is empty,
+        // and shifts farther left when an item is equipped there.
+        int armorShift = offhandStack.isEmpty() ? 0 : 18;
+        int armorX = Math.max(42, cx - 91 - armorSlotSize - 16 - armorShift);
         int armorTop = height - 4 - (armorSlotSize * 4 + armorGap * 3);
         EquipmentSlot[] armorSlots = {EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET}; // top to bottom
         for (int i = 0; i < armorSlots.length; i++) {
@@ -259,48 +249,24 @@ public final class PvpKitClient implements ClientModInitializer {
             }
         }
 
-        // Offhand slot sits immediately left of the armor column and displays the real held item.
-        int offhandX = Math.max(2, armorX - armorSlotSize - 5);
-        int offhandY = armorTop + (armorSlotSize * 4 + armorGap * 3) / 2 - armorSlotSize / 2;
-        ItemStack offhandStack = player.getOffhandItem();
-        graphics.fill(offhandX, offhandY, offhandX + armorSlotSize, offhandY + armorSlotSize, 0xB010151D);
-        graphics.fill(offhandX, offhandY, offhandX + armorSlotSize, offhandY + 1, 0x805B6A7D);
-        if (!offhandStack.isEmpty()) {
-            graphics.item(offhandStack, offhandX, offhandY);
-            if (offhandStack.isDamageableItem() && offhandStack.getMaxDamage() > 0) {
-                float remaining = 1.0F - (float) offhandStack.getDamageValue() / (float) offhandStack.getMaxDamage();
-                int barWidth = Mth.clamp((int) (14 * remaining), 0, 14);
-                int barColor = remaining > 0.5F ? 0xFF65FF91 : remaining > 0.2F ? 0xFFFFD166 : 0xFFFF5555;
-                graphics.fill(offhandX + 1, offhandY + 14, offhandX + 15, offhandY + 15, 0xFF252A31);
-                if (barWidth > 0) graphics.fill(offhandX + 1, offhandY + 14, offhandX + 1 + barWidth, offhandY + 15, barColor);
-            }
-        } else {
-            graphics.text(client.font, "O", offhandX + 5, offhandY + 4, 0xFF687382, false);
-        }
-
-        // Useful combat stats in a compact vertical panel to the right of the hotbar.
-        int statsX = Math.min(width - 46, cx + 101);
+        // Minimal right-side combat stats: symbols and values only, with no panel background.
+        int statsX = Math.min(width - 42, cx + 101);
         int statsY = armorTop + 1;
-        int statsW = 43;
-        int statsH = 15;
+        int statsGap = 17;
         int food = player.getFoodData().getFoodLevel();
         int health = Mth.ceil(player.getHealth());
-        int mainDurability = 100;
         ItemStack mainHand = player.getMainHandItem();
-        String weaponText = "W ∞";
+        String weaponText = "⚔ ∞";
         int weaponColor = 0xFFEAF2FF;
         if (!mainHand.isEmpty() && mainHand.isDamageableItem() && mainHand.getMaxDamage() > 0) {
-            mainDurability = Mth.clamp(100 - (int) Math.round(100.0D * mainHand.getDamageValue() / mainHand.getMaxDamage()), 0, 100);
-            weaponText = "W " + mainDurability + "%";
+            int mainDurability = Mth.clamp(100 - (int) Math.round(100.0D * mainHand.getDamageValue() / mainHand.getMaxDamage()), 0, 100);
+            weaponText = "⚔ " + mainDurability + "%";
             weaponColor = mainDurability > 50 ? 0xFF65FF91 : mainDurability > 20 ? 0xFFFFD166 : 0xFFFF5555;
         }
-        String[] statLines = {"HP " + health, "Food " + food, "Totem " + totems, weaponText};
+        String[] statLines = {"♥ " + health, "● " + food, "✦ " + totems, weaponText};
         int[] statColors = {health <= 4 ? 0xFFFF5555 : 0xFFFF7777, food <= 6 ? 0xFFFFD166 : 0xFFEAF2FF, totems > 0 ? 0xFF65FF91 : 0xFFB8C0CC, weaponColor};
         for (int i = 0; i < statLines.length; i++) {
-            int sy = statsY + i * (statsH + 2);
-            graphics.fill(statsX, sy, statsX + statsW, sy + statsH, 0xB010151D);
-            graphics.fill(statsX, sy, statsX + 2, sy + statsH, 0x805B6A7D);
-            graphics.text(client.font, statLines[i], statsX + 5, sy + 4, statColors[i], true);
+            graphics.text(client.font, statLines[i], statsX, statsY + i * statsGap, statColors[i], true);
         }
 
         if (player.getHealth() <= 4.0F) {
