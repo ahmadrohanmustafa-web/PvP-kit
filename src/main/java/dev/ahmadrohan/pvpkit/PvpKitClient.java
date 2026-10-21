@@ -363,7 +363,6 @@ public final class PvpKitClient implements ClientModInitializer {
         if (stack.is(Items.SPIDER_EYE)) return "Warning: Poison";
         if (stack.is(Items.ROTTEN_FLESH)) return "Warning: may cause Hunger";
         if (stack.is(Items.POISONOUS_POTATO)) return "Warning: may cause Poison";
-        if (stack.is(Items.RAW_CHICKEN)) return "Warning: may cause Hunger";
         if (stack.is(Items.POISONOUS_POTATO)) return "Warning: may cause Poison";
         return "";
     }
