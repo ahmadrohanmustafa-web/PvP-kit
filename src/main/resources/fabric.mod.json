@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "id": "pvpkit",
   "version": "${version}",
-  "name": "PvP-kit",
-  "description": "Configurable client-side PvP companion core for Minecraft Java 26.3.",
+  "name": "PvP-kit (Minecraft 1.21.11)",
+  "description": "Configurable client-side PvP companion for Minecraft Java 1.21.11.",
   "authors": [
     "ahmadrohanmustafa-web"
   ],
@@ -15,9 +15,9 @@
     ]
   },
   "depends": {
-    "fabricloader": ">=0.19.5",
-    "minecraft": "~26.3",
-    "java": ">=25",
+    "fabricloader": ">=0.18.4",
+    "minecraft": "~1.21.11",
+    "java": ">=21",
     "fabric-api": "*"
   },
   "mixins": [
